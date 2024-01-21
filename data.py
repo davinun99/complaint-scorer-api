@@ -1,5 +1,4 @@
 import pandas as pd 
-
 def count_length (data):
 	if type(data) == list:
 		return len(data)
@@ -23,9 +22,7 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.tenderPeriod.durationInDays': ocds_data['tender']['tenderPeriod']['durationInDays'],
 		'tender.enquiryPeriod.durationInDays': ocds_data['tender']['enquiryPeriod']['durationInDays'],
 		'tender.numberOfTenderers': ocds_data['tender']['numberOfTenderers'],
-		'tender.techniques.hasElectronicAuction': 1 if ocds_data['tender']['techniques']['hasElectronicAuction'] else 0,
 		'tender.lots.count': count_length(ocds_data['tender']['lots']),
-		'tender.enquiries.count': count_length(ocds_data['tender']['enquiries']),
 		'tender.bidOpening.date.month': get_month(ocds_data['tender']['bidOpening']['date']),
 		'tender.bidOpening.date.year': get_year(ocds_data['tender']['bidOpening']['date']),
 		'tender.bidOpening.date.yearmonth': get_year_month(ocds_data['tender']['bidOpening']['date']),
@@ -92,10 +89,19 @@ def get_pd_dataframe(ocds_data: dict):
 		# 'contracts.implementation.purchaseOrders.count': count_length(ocds_data['contracts']['implementation']['purchaseOrders']),, es un array
 		# 'contracts.implementation.transactions.count': count_length(ocds_data['contracts']['implementation']['transactions']),, es un array
 		# 'tender.criteria.id': ocds_data['tender']['criteria']['id'], es un array
- 		'tender.enquiries total': count_length(ocds_data['tender']['enquiries']),
 		# tender.enquiries respondidos
 		# tender.enquiries porcentaje
 	}
+	if 'techniques' in ocds_data['tender'] and 'hasElectronicAuction' in ocds_data['tender']['techniques']:
+		data['tender.techniques.hasElectronicAuction'] = 1 if ocds_data['tender']['techniques']['hasElectronicAuction'] else 0
+	else:
+		data['tender.techniques.hasElectronicAuction'] = None
+	if 'enquiries' in ocds_data['tender']:
+		data['tender.enquiries total'] = count_length(ocds_data['tender']['enquiries']),
+		data['tender.enquiries.count'] = count_length(ocds_data['tender']['enquiries']),
+	else:
+		data['tender.enquiries total'] = None
+		data['tender.enquiries.count'] = None
 	data = pd.DataFrame([data])
 	return data
 
