@@ -23,3 +23,7 @@ It works like this:
 ```pipenv shell```
 
 ```flask --app api_tagger.py --debug run```
+
+After everything is installed, you can run the app with:
+
+```pipenv run flask --app api_tagger.py --debug run```
