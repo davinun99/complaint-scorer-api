@@ -96,11 +96,11 @@ def get_pd_dataframe(ocds_data: dict):
 		data['tender.techniques.hasElectronicAuction'] = 1 if ocds_data['tender']['techniques']['hasElectronicAuction'] else 0
 	else:
 		data['tender.techniques.hasElectronicAuction'] = None
+
 	if 'enquiries' in ocds_data['tender']:
-		data['tender.enquiries total'] = count_length(ocds_data['tender']['enquiries']),
-		data['tender.enquiries.count'] = count_length(ocds_data['tender']['enquiries']),
+		data['tender.enquiries total'] = count_length(ocds_data['tender']['enquiries'])
+		data['tender.enquiries.count'] = count_length(ocds_data['tender']['enquiries'])
 	else:
-		data['tender.enquiries total'] = None
 		data['tender.enquiries.count'] = None
 	data = pd.DataFrame([data])
 	return data
