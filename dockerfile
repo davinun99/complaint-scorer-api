@@ -20,4 +20,4 @@ COPY --from=python-deps /python-docker/.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
 COPY . .
 
-CMD [ "python3", "-m" , "flask", "--app", "api_tagger.py", "run", "--host=0.0.0.0"]
+CMD [ "python3", "-m" , "flask", "--app", "api_tagger.py", "run", "-h", "0.0.0.0", "-p", "5050"]

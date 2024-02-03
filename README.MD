@@ -31,7 +31,7 @@ After everything is installed, you can run the app with:
 ## To run (With docker)
 
 ### Build
-```docker build --tag python-docker .   --progress string```
+```docker build --tag python-docker .```
 
 ### Run
-```docker run --rm python-docker```
+```docker run -p 5050:5050 --rm python-docker```
