@@ -16,7 +16,7 @@ It works like this:
 - This project uses pipenv as a virtual environment and to manage the required dependencies.
 
 
-## To run 
+## To run (Without docker)
 
 ```pipenv install```
 
@@ -27,3 +27,11 @@ It works like this:
 After everything is installed, you can run the app with:
 
 ```pipenv run flask --app api_tagger.py --debug run```
+
+## To run (With docker)
+
+### Build
+```docker build --tag python-docker .   --progress string```
+
+### Run
+```docker run --rm python-docker```

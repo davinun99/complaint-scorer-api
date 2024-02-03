@@ -1,12 +1,9 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.11.3-alpine3.17 as base
+FROM python:3.11.7-slim as base
 
 
 WORKDIR /python-docker
-
-# COPY requirements.txt requirements.txt
-# RUN pip3 install -r requirements.txt
 
 FROM base AS python-deps
 
@@ -14,15 +11,13 @@ RUN pip install pipenv
 RUN apt-get update && apt-get install -y --no-install-recommends gcc
 COPY Pipfile .
 COPY Pipfile.lock .
-# RUN PIPENV_VENV_IN_PROJECT=1 
-# RUN cd python-dockerfile
-RUN pipenv install --deploy
-# RUN 
-FROM base AS runtime
-# Copy virtual env from python-deps stage
-COPY --from=python-deps /.venv /.venv
-ENV PATH="/.venv/bin:$PATH"
 
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
+
+FROM base AS runtime
+
+COPY --from=python-deps /python-docker/.venv /.venv
+ENV PATH="/.venv/bin:$PATH"
 COPY . .
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+CMD [ "python3", "-m" , "flask", "--app", "api_tagger.py", "run", "--host=0.0.0.0"]
