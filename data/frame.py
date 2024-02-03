@@ -1,21 +1,8 @@
 import pandas as pd 
-def count_length (data):
-	if type(data) == list:
-		return len(data)
-	return 0
-	# return len(data) 
-def get_month (data):
-	if type(data) == str:
-		return int(data.split('-')[1])
-	return None
-def get_year (data):
-	if type(data) == str:
-		return int(data.split('-')[0])
-	return None
-def get_year_month (data):
-	if type(data) == str:
-		return int(data.split('-')[0])*100 + int(data.split('-')[1])
-	return None
+
+from data.general_utils import get_month, get_year, get_year_month, count_length
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co
+
 def get_pd_dataframe(ocds_data: dict):
 	data = {
 		'tender.value.amount': ocds_data['tender']['value']['amount'],
@@ -44,7 +31,6 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.enquiryPeriod.startDate.month': get_month(ocds_data['tender']['enquiryPeriod']['startDate']),
 		'tender.enquiryPeriod.startDate.year': get_year(ocds_data['tender']['enquiryPeriod']['startDate']),
 		'tender.enquiryPeriod.startDate.yearmonth': get_year_month(ocds_data['tender']['enquiryPeriod']['startDate']),
-		'tender.status_active': ocds_data['tender']['status'] == 'active',
 		'tender.status_cancelled': ocds_data['tender']['status'] == 'cancelled',
 		'tender.status_complete': ocds_data['tender']['status'] == 'complete',
 		'tender.status_unsuccessful': ocds_data['tender']['status'] == 'unsuccesful',
@@ -69,7 +55,6 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.statusDetails_Adjudicada': ocds_data['tender']['statusDetails'] == 'Adjudicada',
 		'tender.statusDetails_Anulada o Cancelada': ocds_data['tender']['statusDetails'] == 'Anulada o Cancelada',
 		'tender.statusDetails_Desierta': ocds_data['tender']['statusDetails'] == 'Desierta',
-		'tender.statusDetails_En Convocatoria (Abierta)': ocds_data['tender']['statusDetails'] == 'En Convocatoria (Abierta)',
 		'tender.statusDetails_En Evaluacion (Cerrada)': ocds_data['tender']['statusDetails'] == 'En Evaluacion (Cerrada)',
 		'tender.statusDetails_Inconsistente': ocds_data['tender']['statusDetails'] == 'Inconsistente',
 		'tender.statusDetails_Suspendida': ocds_data['tender']['statusDetails'] == 'Suspendida',
@@ -80,7 +65,6 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.mainProcurementCategory_goods': ocds_data['tender']['mainProcurementCategory'] == 'goods',
 		'tender.mainProcurementCategory_services': ocds_data['tender']['mainProcurementCategory'] == 'services',
 		'tender.mainProcurementCategory_works': ocds_data['tender']['mainProcurementCategory'] == 'works',
-		'tender.procurementMethod_open': ocds_data['tender']['procurementMethod'] == 'open',
 		# 'tender.procurementMethodRationale_covid-19': if procurementMethodRationale in ocds_data['tender']['procurementMethodRationale'] == 'covid-19',
 		# 'tender.procurementIntention.rationale_covid-19': ocds_data['tender']['procurementIntention']['rationale'] == 'covid-19',
 		'awards.count': count_length(ocds_data['awards']),
@@ -91,6 +75,17 @@ def get_pd_dataframe(ocds_data: dict):
 		# 'tender.criteria.id': ocds_data['tender']['criteria']['id'], es un array
 		# tender.enquiries respondidos
 		# tender.enquiries porcentaje
+		
+		'Preguntas Sin Respuesta': has_no_enquiry_answer(ocds_data),
+		'Enmiendas  del contrato': count_ammenments(ocds_data) > 0,
+		'Proveedores Notificados CO': proveed_notificados_co(ocds_data),
+		'Monto faltante': has_amount_missing(ocds_data),
+		'Criterio de evaluacion faltante': has_criteria_missing(ocds_data),
+		'Tiempo de convocatoria LPN': False,
+		'Oferente Unico': False,
+		'Tiempo de Convocatoria CO': False,
+
+
 	}
 	if 'techniques' in ocds_data['tender'] and 'hasElectronicAuction' in ocds_data['tender']['techniques']:
 		data['tender.techniques.hasElectronicAuction'] = 1 if ocds_data['tender']['techniques']['hasElectronicAuction'] else 0
@@ -100,6 +95,7 @@ def get_pd_dataframe(ocds_data: dict):
 	if 'enquiries' in ocds_data['tender']:
 		data['tender.enquiries total'] = count_length(ocds_data['tender']['enquiries'])
 		data['tender.enquiries.count'] = count_length(ocds_data['tender']['enquiries'])
+		data['contracts.amendments.count']= count_ammenments(ocds_data)
 	else:
 		data['tender.enquiries.count'] = None
 	data = pd.DataFrame([data])

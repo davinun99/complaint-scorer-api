@@ -1,11 +1,9 @@
 import flask
 from flask import request
-import pandas as pd 
-import numpy as np
 import h2o
 
 from dncp import get_release, get_ocds_record
-from data import get_pd_dataframe
+from data.frame import get_pd_dataframe
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -21,8 +19,8 @@ def api_home():
     compiled_release = release['releases'][0]
     df = get_pd_dataframe(compiled_release)
 
-    pred_class = h2o.mojo_predict_pandas(df, "mojo.zip", 
-                               genmodel_jar_path = 'jar/h2o-genmodel.jar', 
+    pred_class = h2o.mojo_predict_pandas(df, "GBM_grid_1_AutoML_1_20230927_154916_model_8.zip", 
+                               genmodel_jar_path = 'jar/gbm-h2o-genmodel.jar', 
                                classpath = 'jar/*',
                                verbose = True
                                )
@@ -30,11 +28,15 @@ def api_home():
     return {
         'prediction': pred_dict,
         'compiledRelease': compiled_release,
-        'rows': 'df',
+        # 'rows': 'df',
     }
 
 @app.errorhandler(404)
 def page_not_found(e):
     return "<h1>404</h1><p>No se encuentra el recurso.</p>", 404
 
-app.run()
+# if __name__ == "__main__"
+# app.run()
+
+if __name__ == "__main__":
+    app.run(debug=True)
