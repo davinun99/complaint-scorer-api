@@ -22,11 +22,11 @@ It works like this:
 
 ```pipenv shell```
 
-```flask --app api_tagger.py --debug run```
+```flask --app scorer.py --debug run```
 
 After everything is installed, you can run the app with:
 
-```pipenv run flask --app api_tagger.py --debug run```
+```pipenv run flask --app scorer.py --debug run```
 
 ## To run (With docker)
 
