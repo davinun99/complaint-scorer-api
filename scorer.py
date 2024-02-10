@@ -19,8 +19,14 @@ def index():
 					ID licitacion: <input type="number" name="id" />
 					<input type="submit" method="get" value="Calcular score"  />
                     <ul>
-                    <li>Ejemplo sin protestas: <a href="/api/v1/predict?id=415916">415916</a></li>
-                    <li>Ejemplo con protestas: <a href="/api/v1/predict?id=367291">367291</a></li>
+                    <li>
+                        Ejemplo sin protestas: <a href="/api/v1/predict?id=415916" style="margin-right:5px;">415916</a> 
+                        <a href="https://www.contrataciones.gov.py/licitaciones/adjudicacion/415916-construccion-ampliacion-edificio-conacyt-1/resumen-adjudicacion.html">Ver en pag. DNCP</a>
+                    </li>
+                    <li>
+                        Ejemplo con protestas: <a href="/api/v1/predict?id=367291" style="margin-right:5px;">367291</a>
+                        <a href="https://www.contrataciones.gov.py/licitaciones/convocatoria/367291-lpn-97-2019-adquisicion-certificados-servicios-ambientales-compensacion-ejecucion-ob-1.html#impugnaciones">Ver en pag. DNCP</a>
+                    </li>
                     </ul>
 					
 				'''
