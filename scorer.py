@@ -47,9 +47,17 @@ def api_home():
                                classpath = 'jar/*',
                                verbose = True
                                )
+    
     pred_dict = pred_class.to_dict(orient = "records")[0]
+    risk_percentage = pred_dict['True'] * 100
     return {
-        'prediction': pred_dict,
+        # 'prediction': pred_dict,
+        'riskScore': risk_percentage,
+        'riskLevel': 'High' if risk_percentage >= 75 else 'Medium' if risk_percentage >= 50 else 'Low',
+        'parameters': {
+            'High': '>= 75%',
+            'Medium': '>= 50%',
+		}
         # 'compiledRelease': compiled_release,
         # 'rows': 'df',
     }
