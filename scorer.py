@@ -6,14 +6,37 @@ from dncp import get_release, get_ocds_record
 from data.frame import get_pd_dataframe
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+# app.config["DEBUG"] = True
 
-@app.route('/home', methods=['GET'])
+@app.route('/', methods=['GET'])
+def index():
+	h2o.init()
+	html =  '''
+					<h1>Complaint scorer</h1>
+					<p>Score de protestas -  API</p>
+					<form action="/api/v1/predict">
+                    
+					ID licitacion: <input type="number" name="id" />
+					<input type="submit" method="get" value="Calcular score"  />
+                    <ul>
+                    <li>Ejemplo sin protestas: <a href="/api/v1/predict?id=415916">415916</a></li>
+                    <li>Ejemplo con protestas: <a href="/api/v1/predict?id=367291">367291</a></li>
+                    </ul>
+					
+				'''
+	return html
+
+@app.route('/api/v1/predict', methods=['GET'])
 def api_home():
-    
+    h2o.init()
     id = request.args.get('id')
     
     record = get_ocds_record(id)
+    if 'records' not in record:
+        return {
+			'error': 'No se encontró la licitación'
+		}
+    
     ocid = record['records'][0]['compiledRelease']['id']
     release = get_release(ocid)
     compiled_release = release['releases'][0]
@@ -27,7 +50,7 @@ def api_home():
     pred_dict = pred_class.to_dict(orient = "records")[0]
     return {
         'prediction': pred_dict,
-        'compiledRelease': compiled_release,
+        # 'compiledRelease': compiled_release,
         # 'rows': 'df',
     }
 
@@ -39,4 +62,5 @@ def page_not_found(e):
 # app.run()
 
 if __name__ == "__main__":
+    # serve(app, listen='*:80')
     app.run(debug=True, host='0.0.0.0', port=80)

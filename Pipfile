@@ -8,6 +8,7 @@ flask = "*"
 pandas = "*"
 h2o = "*"
 requests = "*"
+gunicorn = "*"
 
 [dev-packages]
 

@@ -30,8 +30,9 @@ After everything is installed, you can run the app with:
 
 ## To run (With docker)
 
-### Build
-```docker build --tag python-docker .```
-
-### Run
-```docker run -p 5050:5050 --rm python-docker```
+## DOCKER PRODUCTION COMMANDS
+```docker build . -t prod_flask```
+```docker run -p 80:80 --name prod_flask_cont prod_flask```
+<!-- ```docker build . -t flask_waitress_img``` -->
+<!-- ```docker run --name flask_prod_container -p 80:80 flask_waitress_img``` -->
+	
