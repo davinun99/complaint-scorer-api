@@ -38,6 +38,9 @@ After everything is installed, you can run the app with:
 	
 ## AWS ECR DEPLOYMENT
 aws ecr get-login-password --region sa-east-1 | docker login --username AWS --password-stdin 339712859235.dkr.ecr.sa-east-1.amazonaws.com
+
+docker buildx build --platform=linux/amd64 -t prod_flask .
+
 docker tag prod_flask 339712859235.dkr.ecr.sa-east-1.amazonaws.com/complaint-scorer
 docker push 339712859235.dkr.ecr.sa-east-1.amazonaws.com/complaint-scorer:latest
 

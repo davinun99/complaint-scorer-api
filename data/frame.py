@@ -8,7 +8,6 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.value.amount': ocds_data['tender']['value']['amount'],
 		'tender.tenderPeriod.durationInDays': ocds_data['tender']['tenderPeriod']['durationInDays'],
 		'tender.enquiryPeriod.durationInDays': ocds_data['tender']['enquiryPeriod']['durationInDays'],
-		'tender.numberOfTenderers': ocds_data['tender']['numberOfTenderers'],
 		'tender.lots.count': count_length(ocds_data['tender']['lots']),
 		'tender.bidOpening.date.month': get_month(ocds_data['tender']['bidOpening']['date']),
 		'tender.bidOpening.date.year': get_year(ocds_data['tender']['bidOpening']['date']),
@@ -84,9 +83,9 @@ def get_pd_dataframe(ocds_data: dict):
 		'Tiempo de convocatoria LPN': False,
 		'Oferente Unico': False,
 		'Tiempo de Convocatoria CO': False,
-
-
 	}
+	if 'numberOfTenderers' in ocds_data['tender']:
+		data['tender.numberOfTenderers'] = ocds_data['tender']['numberOfTenderers'],
 	if 'techniques' in ocds_data['tender'] and 'hasElectronicAuction' in ocds_data['tender']['techniques']:
 		data['tender.techniques.hasElectronicAuction'] = 1 if ocds_data['tender']['techniques']['hasElectronicAuction'] else 0
 	else:
