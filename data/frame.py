@@ -1,17 +1,12 @@
 import pandas as pd 
 
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing
 
 def get_pd_dataframe(ocds_data: dict):
 	data = {
 		'tender.value.amount': ocds_data['tender']['value']['amount'],
 		'tender.tenderPeriod.durationInDays': ocds_data['tender']['tenderPeriod']['durationInDays'],
-		'tender.enquiryPeriod.durationInDays': ocds_data['tender']['enquiryPeriod']['durationInDays'],
-		'tender.lots.count': count_length(ocds_data['tender']['lots']),
-		'tender.bidOpening.date.month': get_month(ocds_data['tender']['bidOpening']['date']),
-		'tender.bidOpening.date.year': get_year(ocds_data['tender']['bidOpening']['date']),
-		'tender.bidOpening.date.yearmonth': get_year_month(ocds_data['tender']['bidOpening']['date']),
 		'tender.datePublished.month': get_month(ocds_data['tender']['datePublished']),
 		'tender.datePublished.year': get_year(ocds_data['tender']['datePublished']),
 		'tender.datePublished.yearmonth': get_year_month(ocds_data['tender']['datePublished']),
@@ -24,12 +19,6 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.awardPeriod.startDate.month': get_month(ocds_data['tender']['awardPeriod']['startDate']),
 		'tender.awardPeriod.startDate.year': get_year(ocds_data['tender']['awardPeriod']['startDate']),
 		'tender.awardPeriod.startDate.yearmonth': get_year_month(ocds_data['tender']['awardPeriod']['startDate']),
-		'tender.enquiryPeriod.endDate.month': get_month(ocds_data['tender']['enquiryPeriod']['endDate']),
-		'tender.enquiryPeriod.endDate.year': get_year(ocds_data['tender']['enquiryPeriod']['endDate']),
-		'tender.enquiryPeriod.endDate.yearmonth': get_year_month(ocds_data['tender']['enquiryPeriod']['endDate']),
-		'tender.enquiryPeriod.startDate.month': get_month(ocds_data['tender']['enquiryPeriod']['startDate']),
-		'tender.enquiryPeriod.startDate.year': get_year(ocds_data['tender']['enquiryPeriod']['startDate']),
-		'tender.enquiryPeriod.startDate.yearmonth': get_year_month(ocds_data['tender']['enquiryPeriod']['startDate']),
 		'tender.status_cancelled': ocds_data['tender']['status'] == 'cancelled',
 		'tender.status_complete': ocds_data['tender']['status'] == 'complete',
 		'tender.status_unsuccessful': ocds_data['tender']['status'] == 'unsuccesful',
@@ -37,13 +26,6 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.awardCriteria_priceOnly': ocds_data['tender']['awardCriteria'] == 'priceOnly',
 		'tender.awardCriteria_qualityOnly': ocds_data['tender']['awardCriteria'] == 'qualityOnly',
 		'tender.awardCriteria_ratedCriteria': ocds_data['tender']['awardCriteria'] == 'ratedCriteria',
-		'planning.identifier': ocds_data['planning']['identifier'],
-		'planning.budget.amount.amount': ocds_data['planning']['budget']['amount']['amount'],
-		'planning.budget.amount.currency_PYG': ocds_data['planning']['budget']['amount']['currency'] == 'PYG',
-		'planning.budget.amount.currency_USD': ocds_data['planning']['budget']['amount']['currency'] == 'USD',
-		'planning.estimatedDate.month': get_month(ocds_data['planning']['estimatedDate']),
-		'planning.estimatedDate.year': get_year(ocds_data['planning']['estimatedDate']),
-		'planning.estimatedDate.yearmonth': get_year_month(ocds_data['planning']['estimatedDate']),
 		'date.month': get_month(ocds_data['date']),
 		'date.year': get_year(ocds_data['date']),
 		'date.yearmonth': get_year_month(ocds_data['date']),
@@ -66,26 +48,66 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.mainProcurementCategory_works': ocds_data['tender']['mainProcurementCategory'] == 'works',
 		# 'tender.procurementMethodRationale_covid-19': if procurementMethodRationale in ocds_data['tender']['procurementMethodRationale'] == 'covid-19',
 		# 'tender.procurementIntention.rationale_covid-19': ocds_data['tender']['procurementIntention']['rationale'] == 'covid-19',
-		'awards.count': count_length(ocds_data['awards']),
-		'contracts.count': count_length(ocds_data['contracts']),
 		# 'contracts.amendments.count': count_length(ocds_data['contracts']['amendments']), es un array
 		# 'contracts.implementation.purchaseOrders.count': count_length(ocds_data['contracts']['implementation']['purchaseOrders']),, es un array
 		# 'contracts.implementation.transactions.count': count_length(ocds_data['contracts']['implementation']['transactions']),, es un array
 		# 'tender.criteria.id': ocds_data['tender']['criteria']['id'], es un array
 		# tender.enquiries respondidos
 		# tender.enquiries porcentaje
-		
 		'Preguntas Sin Respuesta': has_no_enquiry_answer(ocds_data),
 		'Enmiendas  del contrato': count_ammenments(ocds_data) > 0,
 		'Proveedores Notificados CO': proveed_notificados_co(ocds_data),
-		# 'Monto faltante': has_amount_missing(ocds_data),
-		# 'Criterio de evaluacion faltante': has_criteria_missing(ocds_data),
+		'Monto faltante': has_amount_missing(ocds_data),
+		'Criterio de evaluacion faltante': has_criteria_missing(ocds_data),
 		'Tiempo de convocatoria LPN': False,
 		'Oferente Unico': False,
 		'Tiempo de Convocatoria CO': False,
+		'award.count': 0,
+		'contracts.count': 0,
+		'tender.numberOfTenderers': 0,
+		'tender.bidOpening.date.month': None,
+		'tender.bidOpening.date.year': None,
+		'tender.bidOpening.date.yearmonth': None,
+		'tender.techniques.hasElectronicAuction': 0,
+		'tender.enquiries total': None,
+		'tender.enquiries.count': None,
+		'contracts.amendments.count': None,
+		'tender.procurementIntention.status_complete': None,
+		'tender.procurementIntention.statusDetails_Ejecutada': None,
+		'tender.enquiryPeriod.durationInDays': None,
+		'tender.enquiryPeriod.endDate.month': None,
+		'tender.enquiryPeriod.endDate.year': None,
+		'tender.enquiryPeriod.endDate.yearmonth': None,
+		'tender.enquiryPeriod.startDate.month': None,
+		'tender.enquiryPeriod.startDate.year': None,
+		'tender.enquiryPeriod.startDate.yearmonth': None,
+		'planning.identifier': None,
+		'planning.budget.amount.amount': None,
+		'planning.budget.amount.currency_PYG': None,
+		'planning.budget.amount.currency_USD': None,
+		'planning.estimatedDate.month': None,
+		'planning.estimatedDate.year': None,
+		'planning.estimatedDate.yearmonth': None,
 	}
+	if 'awards' in ocds_data:
+		data['awards.count'] = count_length(ocds_data['awards'])
+
+	if 'contracts' in ocds_data:
+		data['contracts.count'] = count_length(ocds_data['contracts'])
+
+	if 'tenderPeriod' in ocds_data['tender']:
+		data['Tiempo de convocatoria LPN'] = ocds_data['tender']['tenderPeriod']['durationInDays'] <= 19
+		data['Tiempo de Convocatoria CO'] = ocds_data['tender']['tenderPeriod']['durationInDays'] <= 9
+
 	if 'numberOfTenderers' in ocds_data['tender']:
-		data['tender.numberOfTenderers'] = ocds_data['tender']['numberOfTenderers'],
+		data['tender.numberOfTenderers'] = ocds_data['tender']['numberOfTenderers']
+		data['Oferente Unico'] = ocds_data['tender']['numberOfTenderers'] == 1
+	
+	if 'bidOpening' in ocds_data['tender']:
+		data['tender.bidOpening.date.month'] = get_month(ocds_data['tender']['bidOpening']['date'])
+		data['tender.bidOpening.date.year'] = get_year(ocds_data['tender']['bidOpening']['date'])
+		data['tender.bidOpening.date.yearmonth'] = get_year_month(ocds_data['tender']['bidOpening']['date'])
+
 	if 'techniques' in ocds_data['tender'] and 'hasElectronicAuction' in ocds_data['tender']['techniques']:
 		data['tender.techniques.hasElectronicAuction'] = 1 if ocds_data['tender']['techniques']['hasElectronicAuction'] else 0
 	else:
@@ -95,8 +117,33 @@ def get_pd_dataframe(ocds_data: dict):
 		data['tender.enquiries total'] = count_length(ocds_data['tender']['enquiries'])
 		data['tender.enquiries.count'] = count_length(ocds_data['tender']['enquiries'])
 		data['contracts.amendments.count']= count_ammenments(ocds_data)
-	else:
-		data['tender.enquiries.count'] = None
+	
+	if 'procurementIntention' in ocds_data['tender']:
+		data['tender.procurementIntention.status_complete'] = ocds_data['tender']['procurementIntention']['status'] == 'complete'
+		data['tender.procurementIntention.statusDetails_Ejecutada'] = ocds_data['tender']['procurementIntention']['statusDetails'] == 'Ejecutada'
+
+	if 'enquiryPeriod' in ocds_data['tender']:
+		data['tender.enquiryPeriod.durationInDays'] = ocds_data['tender']['enquiryPeriod']['durationInDays']
+		data['tender.enquiryPeriod.endDate.month'] = get_month(ocds_data['tender']['enquiryPeriod']['endDate'])
+		data['tender.enquiryPeriod.endDate.year'] = get_year(ocds_data['tender']['enquiryPeriod']['endDate'])
+		data['tender.enquiryPeriod.endDate.yearmonth'] = get_year_month(ocds_data['tender']['enquiryPeriod']['endDate'])
+		data['tender.enquiryPeriod.startDate.month'] = get_month(ocds_data['tender']['enquiryPeriod']['startDate'])
+		data['tender.enquiryPeriod.startDate.year'] = get_year(ocds_data['tender']['enquiryPeriod']['startDate'])
+		data['tender.enquiryPeriod.startDate.yearmonth'] = get_year_month(ocds_data['tender']['enquiryPeriod']['startDate'])
+	
+	if 'planning' in ocds_data:
+		data['planning.identifier'] = ocds_data['planning']['identifier']
+		data['planning.budget.amount.amount'] = ocds_data['planning']['budget']['amount']['amount']
+		data['planning.budget.amount.currency_PYG'] = ocds_data['planning']['budget']['amount']['currency'] == 'PYG'
+		data['planning.budget.amount.currency_USD'] = ocds_data['planning']['budget']['amount']['currency'] == 'USD'
+		data['planning.estimatedDate.month'] = get_month(ocds_data['planning']['estimatedDate'])
+		data['planning.estimatedDate.year'] = get_year(ocds_data['planning']['estimatedDate'])
+		data['planning.estimatedDate.yearmonth'] = get_year_month(ocds_data['planning']['estimatedDate'])
+
+	if 'lots' in ocds_data['tender']:
+		data['tender.lots.count'] = count_length(ocds_data['tender']['lots'])
+		data['tender.lots'] = count_length(ocds_data['tender']['lots'])
+
 	data = pd.DataFrame([data])
 	return data
 
@@ -104,13 +151,11 @@ def get_pd_dataframe(ocds_data: dict):
 
 # missing data:
 
-# tender.procurementIntention.status_complete
-# tender.procurementIntention.statusDetails_Ejecutada
-
 # tender.eligibilityCriteria q1
 # tender.eligibilityCriteria q2
 # tender.eligibilityCriteria q3
 # tender.eligibilityCriteria q4
+
 # tender.mainProcurementCategoryDetails q1
 # tender.mainProcurementCategoryDetails q2
 # tender.mainProcurementCategoryDetails q3
@@ -149,17 +194,6 @@ def get_pd_dataframe(ocds_data: dict):
 # secondStage.id q2
 # secondStage.id q3
 # secondStage.id q4
-
-
-# Preguntas Sin Respuesta
-# Enmiendas  del contrato
-# Proveedores Notificados CO
-# Monto faltante
-# Criterio de evaluacion faltante
-# Tiempo de convocatoria LPN
-# Oferente Unico
-# Tiempo de Convocatoria CO
-
 
 # tender.coveredBy_1
 # tender.coveredBy_2
