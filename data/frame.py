@@ -1,7 +1,7 @@
 import pandas as pd 
-
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount
+# from data.custom_pickle_methods import TenderProcurementMethodDetails
 
 def get_pd_dataframe(ocds_data: dict):
 	data = {
@@ -88,6 +88,23 @@ def get_pd_dataframe(ocds_data: dict):
 		'planning.estimatedDate.month': None,
 		'planning.estimatedDate.year': None,
 		'planning.estimatedDate.yearmonth': None,
+		'tender.procurementMethodDetails q1': 0,
+		'tender.procurementMethodDetails q2': 0,
+		'tender.procurementMethodDetails q3': 0,
+		'tender.procurementMethodDetails q4': 0,
+		'tender.documents.documentTypeDetails_1': 0,
+		'tender.documents.documentTypeDetails_2': 0,
+		'tender.documents.documentTypeDetails_3': 0,
+		'tender.documents.documentTypeDetails_4': 0,
+		'tender.documents.documentTypeDetails_5': 0,
+		'tender.documents.documentTypeDetails_6': 0,
+		'tender.documents.documentTypeDetails_7': 0,
+		'tender.documents.documentTypeDetails_8': 0,
+		'tender.documents.documentTypeDetails_9': 0,
+		'tender.documents.documentTypeDetails_10': 0,
+		'tender.documents.documentTypeDetails_11': 0,
+		'tender.documents.documentTypeDetails_12': 0,
+		'tender.documents.documentTypeDetails_13': 0,
 	}
 	if 'awards' in ocds_data:
 		data['awards.count'] = count_length(ocds_data['awards'])
@@ -144,9 +161,32 @@ def get_pd_dataframe(ocds_data: dict):
 		data['tender.lots.count'] = count_length(ocds_data['tender']['lots'])
 		data['tender.lots'] = count_length(ocds_data['tender']['lots'])
 
+	if 'procurementMethodDetails' in ocds_data['tender']:
+
+		if ocds_data['tender']['procurementMethodDetails'] == 'Contratación Directa':
+			data['tender.procurementMethodDetails q1'] = 1
+
+		elif ocds_data['tender']['procurementMethodDetails'] == '':
+			data['tender.procurementMethodDetails q2'] = 1
+
+		elif ocds_data['tender']['procurementMethodDetails'] == 'Concurso de Ofertas':
+			data['tender.procurementMethodDetails q3'] = 1
+		else:
+			data['tender.procurementMethodDetails q4'] = 1
+	else:
+		data['tender.procurementMethodDetails q4'] = 1
+	
+	contract_amount = get_contract_amount(ocds_data)
+	data['contracts.value.amount_pyg'] = contract_amount[0]
+	data['contracts.value.amount_usd'] = contract_amount[1]
+	# data['tender.procurementMethodDetails q4'] = ocds_data['tender']['procurementMethodDetails'] == 'Contratación Directa'
+	# ocds_data['tender']['procurementMethodDetails']
+	awards_amount = get_award_amount(ocds_data)
+	data['awards.value.amount_pyg'] = awards_amount[0]
+	data['awards.value.amount_usd'] = awards_amount[1]
+
 	data = pd.DataFrame([data])
 	return data
-
 
 
 # missing data:
@@ -168,10 +208,6 @@ def get_pd_dataframe(ocds_data: dict):
 # tender.ProcurementIntentionCategory q2
 # tender.ProcurementIntentionCategory q3
 # tender.ProcurementIntentionCategory q4
-# tender.procurementMethodDetails q1
-# tender.procurementMethodDetails q2
-# tender.procurementMethodDetails q3
-# tender.procurementMethodDetails q4
 # tender.procuringEntity.id q1
 # tender.procuringEntity.id q2
 # tender.procuringEntity.id q3
@@ -316,19 +352,6 @@ def get_pd_dataframe(ocds_data: dict):
 # tender.items.classification.id.n1_1_56
 # tender.items.classification.id.n1_1_57
 # tender.lots
-# tender.documents.documentTypeDetails_1
-# tender.documents.documentTypeDetails_2
-# tender.documents.documentTypeDetails_3
-# tender.documents.documentTypeDetails_4
-# tender.documents.documentTypeDetails_5
-# tender.documents.documentTypeDetails_6
-# tender.documents.documentTypeDetails_7
-# tender.documents.documentTypeDetails_8
-# tender.documents.documentTypeDetails_9
-# tender.documents.documentTypeDetails_10
-# tender.documents.documentTypeDetails_11
-# tender.documents.documentTypeDetails_12
-# tender.documents.documentTypeDetails_13
 # planning.items.classification.id.n4 q1
 # planning.items.classification.id.n4 q2
 # planning.items.classification.id.n4 q3
@@ -493,8 +516,6 @@ def get_pd_dataframe(ocds_data: dict):
 # contracts.documents.DocumentTypeDetails_10
 # contracts.documents.DocumentTypeDetails_11
 # contracts.documents.DocumentTypeDetails_12
-# contracts.value.amount_pyg
-# contracts.value.amount_usd
 # contracts.status_1
 # contracts.status_2
 # contracts.status_3
@@ -533,8 +554,6 @@ def get_pd_dataframe(ocds_data: dict):
 # awards.suppliers.id q2
 # awards.suppliers.id q3
 # awards.suppliers.id q4
-# awards.value.amount_pyg
-# awards.value.amount_usd
 # awards.status_1
 # awards.status_2
 # awards.status_3
