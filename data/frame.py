@@ -1,6 +1,6 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
 def get_pd_dataframe(ocds_data: dict):
@@ -52,8 +52,8 @@ def get_pd_dataframe(ocds_data: dict):
 		# 'contracts.implementation.purchaseOrders.count': count_length(ocds_data['contracts']['implementation']['purchaseOrders']),, es un array
 		# 'contracts.implementation.transactions.count': count_length(ocds_data['contracts']['implementation']['transactions']),, es un array
 		# 'tender.criteria.id': ocds_data['tender']['criteria']['id'], es un array
-		# tender.enquiries respondidos
-		# tender.enquiries porcentaje
+		'tender.enquiries respondidos': get_tender_enquiries_respondidos(ocds_data),
+		'tender.enquiries porcentaje': get_tender_enquiries_porcentaje(ocds_data),
 		'Preguntas Sin Respuesta': has_no_enquiry_answer(ocds_data),
 		'Enmiendas  del contrato': count_ammenments(ocds_data) > 0,
 		'Proveedores Notificados CO': proveed_notificados_co(ocds_data),
@@ -104,7 +104,7 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.documents.documentTypeDetails_10': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[9]),
 		'tender.documents.documentTypeDetails_11': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[10]),
 		'tender.documents.documentTypeDetails_12': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[11]),
-		'tender.documents.documentTypeDetails_13': get_tender_doc_type_count_others(ocds_data,),
+		'tender.documents.documentTypeDetails_13': get_tender_doc_type_count_others(ocds_data),
 	}
 	if 'awards' in ocds_data:
 		data['awards.count'] = count_length(ocds_data['awards'])
