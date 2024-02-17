@@ -1,7 +1,7 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount
-# from data.custom_pickle_methods import TenderProcurementMethodDetails
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
 def get_pd_dataframe(ocds_data: dict):
 	data = {
@@ -92,19 +92,19 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.procurementMethodDetails q2': 0,
 		'tender.procurementMethodDetails q3': 0,
 		'tender.procurementMethodDetails q4': 0,
-		'tender.documents.documentTypeDetails_1': 0,
-		'tender.documents.documentTypeDetails_2': 0,
-		'tender.documents.documentTypeDetails_3': 0,
-		'tender.documents.documentTypeDetails_4': 0,
-		'tender.documents.documentTypeDetails_5': 0,
-		'tender.documents.documentTypeDetails_6': 0,
-		'tender.documents.documentTypeDetails_7': 0,
-		'tender.documents.documentTypeDetails_8': 0,
-		'tender.documents.documentTypeDetails_9': 0,
-		'tender.documents.documentTypeDetails_10': 0,
-		'tender.documents.documentTypeDetails_11': 0,
-		'tender.documents.documentTypeDetails_12': 0,
-		'tender.documents.documentTypeDetails_13': 0,
+		'tender.documents.documentTypeDetails_1': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[0]),
+		'tender.documents.documentTypeDetails_2': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[1]),
+		'tender.documents.documentTypeDetails_3': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[2]),
+		'tender.documents.documentTypeDetails_4': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[3]),
+		'tender.documents.documentTypeDetails_5': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[4]),
+		'tender.documents.documentTypeDetails_6': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[5]),
+		'tender.documents.documentTypeDetails_7': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[6]),
+		'tender.documents.documentTypeDetails_8': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[7]),
+		'tender.documents.documentTypeDetails_9': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[8]),
+		'tender.documents.documentTypeDetails_10': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[9]),
+		'tender.documents.documentTypeDetails_11': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[10]),
+		'tender.documents.documentTypeDetails_12': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[11]),
+		'tender.documents.documentTypeDetails_13': get_tender_doc_type_count_others(ocds_data,),
 	}
 	if 'awards' in ocds_data:
 		data['awards.count'] = count_length(ocds_data['awards'])
@@ -185,8 +185,8 @@ def get_pd_dataframe(ocds_data: dict):
 	data['awards.value.amount_pyg'] = awards_amount[0]
 	data['awards.value.amount_usd'] = awards_amount[1]
 
-	data = pd.DataFrame([data])
-	return data
+	data_df = pd.DataFrame([data])
+	return data_df, data
 
 
 # missing data:

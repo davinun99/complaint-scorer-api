@@ -1,4 +1,5 @@
 from data.general_utils import count_length
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -72,3 +73,21 @@ def get_award_amount (ocds_data: dict) -> list[int]:
 				currency = award['value']['currency']
 				amount_by_currency[currency] += award['value']['amount']
 	return [amount_by_currency["PYG"], amount_by_currency["USD"]]
+
+def get_tender_doc_type_count(ocds_data: dict, doc_type: str) -> int:
+	count = 0
+	if 'tender' in ocds_data:
+		if 'documents' in ocds_data['tender']:
+			for doc in ocds_data['tender']['documents']:
+				if 'documentTypeDetails' in doc and doc['documentTypeDetails'] == doc_type:
+					count += 1
+	return count
+
+def get_tender_doc_type_count_others(ocds_data: dict) -> int:
+	count = 0
+	if 'tender' in ocds_data:
+		if 'documents' in ocds_data['tender']:
+			for doc in ocds_data['tender']['documents']:
+				if 'documentTypeDetails' in doc and doc['documentTypeDetails'] not in TenderDocumentsDocumentTypeDetail:
+					count += 1
+	return count

@@ -46,7 +46,7 @@ def api_home():
     ocid = record['records'][0]['compiledRelease']['id']
     release = get_release(ocid)
     compiled_release = release['releases'][0]
-    df = get_pd_dataframe(compiled_release)
+    df, data = get_pd_dataframe(compiled_release)
 
     # pred_class = h2o.mojo_predict_pandas(df, "GBM_grid_1_AutoML_1_20230927_154916_model_8.zip", 
     #                            genmodel_jar_path = 'jar/gbm-h2o-genmodel.jar', 
@@ -71,7 +71,7 @@ def api_home():
 		},
         'prediction': pred_dict,
         'compiledRelease': compiled_release,
-        # 'rows': 'df',
+        'rows': data,
     }
 
 @app.errorhandler(404)
