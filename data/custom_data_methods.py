@@ -41,9 +41,34 @@ def has_amount_missing(ocds_data: dict):
 			if type(ocds_data['tender']['value']['amount']) == int:
 				return False
 	return True
+
 def has_criteria_missing(ocds_data: dict):
 	if 'tender' in ocds_data:
 		if 'awardCriteria' in ocds_data['tender']:
 			if 'criteria' in ocds_data['tender']['awardCriteria']:
 				return False
 	return True
+
+def get_contract_amount(ocds_data: dict) -> list[int]:
+	amount_by_currency = {
+		"USD": 0,
+		"PYG": 0,
+	}
+	if 'contracts' in ocds_data:
+		for contract in ocds_data['contracts']:
+			if('value' in contract):
+				currency = contract['value']['currency']
+				amount_by_currency[currency] += contract['value']['amount']
+	return [amount_by_currency["PYG"], amount_by_currency["USD"]]
+
+def get_award_amount (ocds_data: dict) -> list[int]:
+	amount_by_currency = {
+		"USD": 0,
+		"PYG": 0,
+	}
+	if 'awards' in ocds_data:
+		for award in ocds_data['awards']:
+			if('value' in award):
+				currency = award['value']['currency']
+				amount_by_currency[currency] += award['value']['amount']
+	return [amount_by_currency["PYG"], amount_by_currency["USD"]]
