@@ -7,7 +7,7 @@ from data.frame import get_pd_dataframe
 
 app = flask.Flask(__name__)
 # app.config["DEBUG"] = True
-
+# https://www.contrataciones.gov.py/buscador/licitaciones.html?nro_nombre_licitacion=&fecha_desde=01-07-2023&fecha_hasta=31-08-2023&tipo_fecha=PUB&marcas%5B%5D=impugnado&convocante_tipo=&convocante_nombre_codigo=&codigo_contratacion=&catalogo%5Bcodigos_catalogo_n4%5D=&page=1&order=&convocante_codigos=&convocante_tipo_codigo=&unidad_contratacion_codigo=&catalogo%5Bcodigos_catalogo_n4_label%5D=
 @app.route('/', methods=['GET'])
 def index():
 	h2o.init()

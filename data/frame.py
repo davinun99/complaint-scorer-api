@@ -1,8 +1,9 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
+# https://www.contrataciones.gov.py/buscador/licitaciones.html?nro_nombre_licitacion=&fecha_desde=01-07-2023&fecha_hasta=31-08-2023&tipo_fecha=PUB&marcas%5B%5D=impugnado&convocante_tipo=&convocante_nombre_codigo=&codigo_contratacion=&catalogo%5Bcodigos_catalogo_n4%5D=&page=1&order=&convocante_codigos=&convocante_tipo_codigo=&unidad_contratacion_codigo=&catalogo%5Bcodigos_catalogo_n4_label%5D=
 def get_pd_dataframe(ocds_data: dict):
 	data = {
 		'tender.value.amount': ocds_data['tender']['value']['amount'],
@@ -50,7 +51,7 @@ def get_pd_dataframe(ocds_data: dict):
 		# 'tender.procurementIntention.rationale_covid-19': ocds_data['tender']['procurementIntention']['rationale'] == 'covid-19',
 		# 'contracts.amendments.count': count_length(ocds_data['contracts']['amendments']), es un array
 		# 'contracts.implementation.purchaseOrders.count': count_length(ocds_data['contracts']['implementation']['purchaseOrders']),, es un array
-		# 'contracts.implementation.transactions.count': count_length(ocds_data['contracts']['implementation']['transactions']),, es un array
+		'contracts.implementation.transactions.count': get_contracts_transactions_count(ocds_data),
 		# 'tender.criteria.id': ocds_data['tender']['criteria']['id'], es un array
 		'tender.enquiries respondidos': get_tender_enquiries_respondidos(ocds_data),
 		'tender.enquiries porcentaje': get_tender_enquiries_porcentaje(ocds_data),
@@ -105,6 +106,33 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.documents.documentTypeDetails_11': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[10]),
 		'tender.documents.documentTypeDetails_12': get_tender_doc_type_count(ocds_data, TenderDocumentsDocumentTypeDetail[11]),
 		'tender.documents.documentTypeDetails_13': get_tender_doc_type_count_others(ocds_data),
+		'parties.details.legalEntityTypeDetail tenderer_1': 0,
+		'parties.details.legalEntityTypeDetail tenderer_2': 0,
+		'parties.details.legalEntityTypeDetail tenderer_3': 0,
+		'parties.details.legalEntityTypeDetail tenderer_4': 0,
+		'parties.details.legalEntityTypeDetail tenderer_5': 0,
+		'parties.details.legalEntityTypeDetail tenderer_6': 0,
+		'parties.details.legalEntityTypeDetail tenderer_7': 0,
+		'parties.details.legalEntityTypeDetail tenderer_8': 0,
+		'parties.details.legalEntityTypeDetail tenderer_9': 0,
+		'parties.details.legalEntityTypeDetail tenderer_10': 0,
+		'parties.details.legalEntityTypeDetail tenderer_11': 0,
+		'parties.details.legalEntityTypeDetail tenderer_12': 0,
+		'parties.details.legalEntityTypeDetail tenderer_13': 0,
+		'parties.details.legalEntityTypeDetail tenderer_14': 0,
+		'parties.details.legalEntityTypeDetail tenderer_15': 0,
+		'parties.details.legalEntityTypeDetail tenderer_16': 0,
+		'parties.details.legalEntityTypeDetail tenderer_17': 0,
+		'parties.details.legalEntityTypeDetail tenderer_18': 0,
+		'parties.details.legalEntityTypeDetail tenderer_19': 0,
+		'parties.details.legalEntityTypeDetail tenderer_20': 0,
+		'parties.details.legalEntityTypeDetail tenderer_21': 0,
+		'parties.details.legalEntityTypeDetail tenderer_22': 0,
+		'parties.details.legalEntityTypeDetail tenderer_23': 0,
+		'tender.notifiedSuppliers.id q1': 0,
+		'tender.notifiedSuppliers.id q2': 0,
+		'tender.notifiedSuppliers.id q3': 0,
+		'tender.notifiedSuppliers.id q4': 0,
 	}
 	if 'awards' in ocds_data:
 		data['awards.count'] = count_length(ocds_data['awards'])
@@ -184,6 +212,114 @@ def get_pd_dataframe(ocds_data: dict):
 	awards_amount = get_award_amount(ocds_data)
 	data['awards.value.amount_pyg'] = awards_amount[0]
 	data['awards.value.amount_usd'] = awards_amount[1]
+
+	parties_tenderer = get_parties_legal_entity_type_detail(ocds_data, 'tenderer')
+	data['parties.details.legalEntityTypeDetail tenderer_1'] = parties_tenderer[0]
+	data['parties.details.legalEntityTypeDetail tenderer_2'] = parties_tenderer[1]
+	data['parties.details.legalEntityTypeDetail tenderer_3'] = parties_tenderer[2]
+	data['parties.details.legalEntityTypeDetail tenderer_4'] = parties_tenderer[3]
+	data['parties.details.legalEntityTypeDetail tenderer_5'] = parties_tenderer[4]
+	data['parties.details.legalEntityTypeDetail tenderer_6'] = parties_tenderer[5]
+	data['parties.details.legalEntityTypeDetail tenderer_7'] = parties_tenderer[6]
+	data['parties.details.legalEntityTypeDetail tenderer_8'] = parties_tenderer[7]
+	data['parties.details.legalEntityTypeDetail tenderer_9'] = parties_tenderer[8]
+	data['parties.details.legalEntityTypeDetail tenderer_10'] = parties_tenderer[9]
+	data['parties.details.legalEntityTypeDetail tenderer_11'] = parties_tenderer[10]
+	data['parties.details.legalEntityTypeDetail tenderer_12'] = parties_tenderer[11]
+	data['parties.details.legalEntityTypeDetail tenderer_13'] = parties_tenderer[12]
+	data['parties.details.legalEntityTypeDetail tenderer_14'] = parties_tenderer[13]
+	data['parties.details.legalEntityTypeDetail tenderer_15'] = parties_tenderer[14]
+	data['parties.details.legalEntityTypeDetail tenderer_16'] = parties_tenderer[15]
+	data['parties.details.legalEntityTypeDetail tenderer_17'] = parties_tenderer[16]
+	data['parties.details.legalEntityTypeDetail tenderer_18'] = parties_tenderer[17]
+	data['parties.details.legalEntityTypeDetail tenderer_19'] = parties_tenderer[18]
+	data['parties.details.legalEntityTypeDetail tenderer_20'] = parties_tenderer[19]
+	data['parties.details.legalEntityTypeDetail tenderer_21'] = parties_tenderer[20]
+	data['parties.details.legalEntityTypeDetail tenderer_22'] = parties_tenderer[21]
+	data['parties.details.legalEntityTypeDetail tenderer_23'] = parties_tenderer[22]
+	
+	parties_notified_supplier = get_parties_legal_entity_type_detail(ocds_data, 'notifiedSupplier')
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_1'] = parties_notified_supplier[0]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_2'] = parties_notified_supplier[1]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_3'] = parties_notified_supplier[2]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_4'] = parties_notified_supplier[3]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_5'] = parties_notified_supplier[4]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_6'] = parties_notified_supplier[5]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_7'] = parties_notified_supplier[6]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_8'] = parties_notified_supplier[7]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_9'] = parties_notified_supplier[8]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_10'] = parties_notified_supplier[9]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_11'] = parties_notified_supplier[10]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_12'] = parties_notified_supplier[11]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_13'] = parties_notified_supplier[12]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_14'] = parties_notified_supplier[13]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_15'] = parties_notified_supplier[14]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_16'] = parties_notified_supplier[15]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_17'] = parties_notified_supplier[16]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_18'] = parties_notified_supplier[17]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_19'] = parties_notified_supplier[18]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_20'] = parties_notified_supplier[19]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_21'] = parties_notified_supplier[20]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_22'] = parties_notified_supplier[21]
+	data['parties.details.legalEntityTypeDetail notifiedSupplier_23'] = parties_notified_supplier[22]
+
+	awards_doc_type_details = get_awards_doc_type_details(ocds_data)	
+	data['awards.documents.DocumentTypeDetails_1'] = awards_doc_type_details[0]
+	data['awards.documents.DocumentTypeDetails_2'] = awards_doc_type_details[1]
+	data['awards.documents.DocumentTypeDetails_3'] = awards_doc_type_details[2]
+	data['awards.documents.DocumentTypeDetails_4'] = awards_doc_type_details[3]
+	data['awards.documents.DocumentTypeDetails_5'] = awards_doc_type_details[4]
+	data['awards.documents.DocumentTypeDetails_6'] = awards_doc_type_details[5]
+	data['awards.documents.DocumentTypeDetails_7'] = awards_doc_type_details[6]
+	data['awards.documents.DocumentTypeDetails_8'] = awards_doc_type_details[7]
+	data['awards.documents.DocumentTypeDetails_9'] = awards_doc_type_details[8]
+	data['awards.documents.DocumentTypeDetails_10'] = awards_doc_type_details[9]
+	data['awards.documents.DocumentTypeDetails_11'] = awards_doc_type_details[10]
+	data['awards.documents.DocumentTypeDetails_12'] = awards_doc_type_details[11]
+	data['awards.documents.DocumentTypeDetails_13'] = awards_doc_type_details[12]
+	data['awards.documents.DocumentTypeDetails_14'] = awards_doc_type_details[13]
+	data['awards.documents.DocumentTypeDetails_15'] = awards_doc_type_details[14]
+	data['awards.documents.DocumentTypeDetails_16'] = awards_doc_type_details[15]
+
+	tender_notified_suppliers = get_tender_notified_suppliers_id(ocds_data)
+	data['tender.notifiedSuppliers.id q1'] = tender_notified_suppliers[0]
+	data['tender.notifiedSuppliers.id q2'] = tender_notified_suppliers[1]
+	data['tender.notifiedSuppliers.id q3'] = tender_notified_suppliers[2]
+	data['tender.notifiedSuppliers.id q4'] = tender_notified_suppliers[3]
+
+	contract_doc_type_details = get_contract_doc_type_details(ocds_data)
+
+	data['contracts.documents.DocumentTypeDetails_1'] = contract_doc_type_details[0]
+	data['contracts.documents.DocumentTypeDetails_2'] = contract_doc_type_details[1]
+	data['contracts.documents.DocumentTypeDetails_3'] = contract_doc_type_details[2]
+	data['contracts.documents.DocumentTypeDetails_4'] = contract_doc_type_details[3]
+	data['contracts.documents.DocumentTypeDetails_5'] = contract_doc_type_details[4]
+	data['contracts.documents.DocumentTypeDetails_6'] = contract_doc_type_details[5]
+	data['contracts.documents.DocumentTypeDetails_7'] = contract_doc_type_details[6]
+	data['contracts.documents.DocumentTypeDetails_8'] = contract_doc_type_details[7]
+	data['contracts.documents.DocumentTypeDetails_9'] = contract_doc_type_details[8]
+	data['contracts.documents.DocumentTypeDetails_10'] = contract_doc_type_details[9]
+	data['contracts.documents.DocumentTypeDetails_11'] = contract_doc_type_details[10]
+	data['contracts.documents.DocumentTypeDetails_12'] = contract_doc_type_details[11]
+	
+	tender_tenderers = get_tender_tenderers(ocds_data)
+	data['tender.tenderers.id q1'] = tender_tenderers[0]
+	data['tender.tenderers.id q2'] = tender_tenderers[1]
+	data['tender.tenderers.id q3'] = tender_tenderers[2]
+	data['tender.tenderers.id q4'] = tender_tenderers[3]
+
+	tender_sub_method_details = get_tender_submission_method_details(ocds_data)
+	data['tender.submissionMethodDetails q1'] = tender_sub_method_details[0]
+	data['tender.submissionMethodDetails q2'] = tender_sub_method_details[1]
+	data['tender.submissionMethodDetails q3'] = tender_sub_method_details[2]
+	data['tender.submissionMethodDetails q4'] = tender_sub_method_details[3]
+
+	# get_tender_main_procurement_category_details(ocds_data)
+	data['tender.mainProcurementCategoryDetails q1']
+	# tender.mainProcurementCategoryDetails q1
+	# tender.mainProcurementCategoryDetails q2
+	# tender.mainProcurementCategoryDetails q3
+	# tender.mainProcurementCategoryDetails q4
 
 	data_df = pd.DataFrame([data])
 	return data_df, data
