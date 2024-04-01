@@ -47,14 +47,9 @@ def api_home():
     release = get_release(ocid)
     compiled_release = release['releases'][0]
     df, data = get_pd_dataframe(compiled_release)
-
-    # pred_class = h2o.mojo_predict_pandas(df, "GBM_grid_1_AutoML_1_20230927_154916_model_8.zip", 
-    #                            genmodel_jar_path = 'jar/gbm-h2o-genmodel.jar', 
-    #                            classpath = 'jar/*',
-    #                            verbose = True
-    #                            )
-    pred_class = h2o.mojo_predict_pandas(df, "GBM_grid_1_AutoML_1_20230927_154916_model_81.zip", 
-                               genmodel_jar_path = 'jar/GBM_grid_1_AutoML_1_20230927_154916_model_8-genmodel.jar', 
+    
+    pred_class = h2o.mojo_predict_pandas(df, "DRF_1_AutoML_1_20240303_161839.zip", 
+                               genmodel_jar_path = 'jar/h2o-genmodel.jar', 
                                classpath = 'jar/*',
                                verbose = True
                                )

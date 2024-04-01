@@ -315,7 +315,7 @@ def get_pd_dataframe(ocds_data: dict):
 	data['tender.submissionMethodDetails q4'] = tender_sub_method_details[3]
 
 	# get_tender_main_procurement_category_details(ocds_data)
-	data['tender.mainProcurementCategoryDetails q1']
+	# data['tender.mainProcurementCategoryDetails q1']
 	# tender.mainProcurementCategoryDetails q1
 	# tender.mainProcurementCategoryDetails q2
 	# tender.mainProcurementCategoryDetails q3
