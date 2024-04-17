@@ -1,6 +1,6 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
 # https://www.contrataciones.gov.py/buscador/licitaciones.html?nro_nombre_licitacion=&fecha_desde=01-07-2023&fecha_hasta=31-08-2023&tipo_fecha=PUB&marcas%5B%5D=impugnado&convocante_tipo=&convocante_nombre_codigo=&codigo_contratacion=&catalogo%5Bcodigos_catalogo_n4%5D=&page=1&order=&convocante_codigos=&convocante_tipo_codigo=&unidad_contratacion_codigo=&catalogo%5Bcodigos_catalogo_n4_label%5D=
@@ -52,7 +52,6 @@ def get_pd_dataframe(ocds_data: dict):
 		# 'contracts.amendments.count': count_length(ocds_data['contracts']['amendments']), es un array
 		# 'contracts.implementation.purchaseOrders.count': count_length(ocds_data['contracts']['implementation']['purchaseOrders']),, es un array
 		'contracts.implementation.transactions.count': get_contracts_transactions_count(ocds_data),
-		# 'tender.criteria.id': ocds_data['tender']['criteria']['id'], es un array
 		'tender.enquiries respondidos': get_tender_enquiries_respondidos(ocds_data),
 		'tender.enquiries porcentaje': get_tender_enquiries_porcentaje(ocds_data),
 		'Preguntas Sin Respuesta': has_no_enquiry_answer(ocds_data),
@@ -70,9 +69,9 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.bidOpening.date.year': None,
 		'tender.bidOpening.date.yearmonth': None,
 		'tender.techniques.hasElectronicAuction': 0,
-		'tender.enquiries total': None,
-		'tender.enquiries.count': None,
-		'contracts.amendments.count': None,
+		'tender.enquiries total': 0,
+		'tender.enquiries.count': 0,
+		'contracts.amendments.count': 0,
 		'tender.procurementIntention.status_complete': None,
 		'tender.procurementIntention.statusDetails_Ejecutada': None,
 		'tender.enquiryPeriod.durationInDays': None,
@@ -84,8 +83,8 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.enquiryPeriod.startDate.yearmonth': None,
 		'planning.identifier': None,
 		'planning.budget.amount.amount': None,
-		'planning.budget.amount.currency_PYG': None,
-		'planning.budget.amount.currency_USD': None,
+		'planning.budget.amount.currency_PYG': 0,
+		'planning.budget.amount.currency_USD': 0,
 		'planning.estimatedDate.month': None,
 		'planning.estimatedDate.year': None,
 		'planning.estimatedDate.yearmonth': None,
@@ -133,6 +132,10 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.notifiedSuppliers.id q2': 0,
 		'tender.notifiedSuppliers.id q3': 0,
 		'tender.notifiedSuppliers.id q4': 0,
+		'tender.eligibilityCriteria q1': 0,
+		'tender.eligibilityCriteria q2': 0,
+		'tender.eligibilityCriteria q3': 0,
+		'tender.eligibilityCriteria q4': 0,
 	}
 	if 'awards' in ocds_data:
 		data['awards.count'] = count_length(ocds_data['awards'])
@@ -204,6 +207,10 @@ def get_pd_dataframe(ocds_data: dict):
 	else:
 		data['tender.procurementMethodDetails q4'] = 1
 	
+	data['tender.eligibilityCriteria q1'] = get_tender_elegibility_criteria(ocds_data, 0)
+	data['tender.eligibilityCriteria q2'] = get_tender_elegibility_criteria(ocds_data, 1)
+	data['tender.eligibilityCriteria q3'] = get_tender_elegibility_criteria(ocds_data, 2)
+	data['tender.eligibilityCriteria q4'] = get_tender_elegibility_criteria(ocds_data, 3)
 	contract_amount = get_contract_amount(ocds_data)
 	data['contracts.value.amount_pyg'] = contract_amount[0]
 	data['contracts.value.amount_usd'] = contract_amount[1]
@@ -326,11 +333,6 @@ def get_pd_dataframe(ocds_data: dict):
 
 
 # missing data:
-
-# tender.eligibilityCriteria q1
-# tender.eligibilityCriteria q2
-# tender.eligibilityCriteria q3
-# tender.eligibilityCriteria q4
 
 # tender.mainProcurementCategoryDetails q1
 # tender.mainProcurementCategoryDetails q2

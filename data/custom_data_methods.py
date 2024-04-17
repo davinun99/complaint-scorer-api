@@ -1,5 +1,5 @@
 from data.general_utils import count_length
-from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -166,6 +166,18 @@ def get_tender_notified_suppliers_id(ocds_data: dict) -> int:
 				else:
 					count_arr[3] += 1
 	return count_arr
+
+
+def get_tender_elegibility_criteria(ocds_data: dict, index: int) -> int:
+	if 'tender' in ocds_data:
+		if 'eligibilityCriteria' in ocds_data['tender']:
+			eligibilityCriteria = ocds_data['tender']['eligibilityCriteria']
+			if eligibilityCriteria in TenderEligibilityCriteria[index]:
+				return 1
+			if len(eligibilityCriteria) != 0 and index == 3:
+				return 1
+	return 0
+				
 
 def get_contract_doc_type_details(ocds_data):
 	map_data = {
