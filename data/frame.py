@@ -1,6 +1,6 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
 # https://www.contrataciones.gov.py/buscador/licitaciones.html?nro_nombre_licitacion=&fecha_desde=01-07-2023&fecha_hasta=31-08-2023&tipo_fecha=PUB&marcas%5B%5D=impugnado&convocante_tipo=&convocante_nombre_codigo=&codigo_contratacion=&catalogo%5Bcodigos_catalogo_n4%5D=&page=1&order=&convocante_codigos=&convocante_tipo_codigo=&unidad_contratacion_codigo=&catalogo%5Bcodigos_catalogo_n4_label%5D=
@@ -211,6 +211,12 @@ def get_pd_dataframe(ocds_data: dict):
 	data['tender.eligibilityCriteria q2'] = get_tender_elegibility_criteria(ocds_data, 1)
 	data['tender.eligibilityCriteria q3'] = get_tender_elegibility_criteria(ocds_data, 2)
 	data['tender.eligibilityCriteria q4'] = get_tender_elegibility_criteria(ocds_data, 3)
+
+	data['tender.mainProcurementCategoryDetails q1'] = get_tender_main_procurement_methods_details(ocds_data, 0)
+	data['tender.mainProcurementCategoryDetails q2'] = get_tender_main_procurement_methods_details(ocds_data, 1)
+	data['tender.mainProcurementCategoryDetails q3'] = get_tender_main_procurement_methods_details(ocds_data, 2)
+	data['tender.mainProcurementCategoryDetails q4'] = get_tender_main_procurement_methods_details(ocds_data, 3)
+
 	contract_amount = get_contract_amount(ocds_data)
 	data['contracts.value.amount_pyg'] = contract_amount[0]
 	data['contracts.value.amount_usd'] = contract_amount[1]
@@ -321,23 +327,12 @@ def get_pd_dataframe(ocds_data: dict):
 	data['tender.submissionMethodDetails q3'] = tender_sub_method_details[2]
 	data['tender.submissionMethodDetails q4'] = tender_sub_method_details[3]
 
-	# get_tender_main_procurement_category_details(ocds_data)
-	# data['tender.mainProcurementCategoryDetails q1']
-	# tender.mainProcurementCategoryDetails q1
-	# tender.mainProcurementCategoryDetails q2
-	# tender.mainProcurementCategoryDetails q3
-	# tender.mainProcurementCategoryDetails q4
-
 	data_df = pd.DataFrame([data])
 	return data_df, data
 
 
 # missing data:
 
-# tender.mainProcurementCategoryDetails q1
-# tender.mainProcurementCategoryDetails q2
-# tender.mainProcurementCategoryDetails q3
-# tender.mainProcurementCategoryDetails q4
 # tender.submissionMethodDetails q1
 # tender.submissionMethodDetails q2
 # tender.submissionMethodDetails q3

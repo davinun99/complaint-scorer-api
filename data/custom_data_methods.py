@@ -1,5 +1,5 @@
 from data.general_utils import count_length
-from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -177,6 +177,16 @@ def get_tender_elegibility_criteria(ocds_data: dict, index: int) -> int:
 			if len(eligibilityCriteria) != 0 and index == 3:
 				return 1
 	return 0
+
+def get_tender_main_procurement_methods_details(ocds_data: dict, index: int) -> int:
+	if 'tender' in ocds_data:
+		if 'mainProcurementMethodDetails' in ocds_data['tender']:
+			mainProcurementMethodDetails = ocds_data['tender']['mainProcurementCategoryDetails']
+			if mainProcurementMethodDetails in TenderMainProcurementCategoryDetails[index]:
+				return 1
+			if len(mainProcurementMethodDetails) != 0 and index == 3:
+				return 1
+	return 0
 				
 
 def get_contract_doc_type_details(ocds_data):
@@ -253,8 +263,6 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 # parties.roles tenderer q3	137.9390	0.0338	0.0033
 # parties.roles notifiedSupplier q1	120.8446	0.0296	0.0029
 
-# tender.mainProcurementCategoryDetails q1	98.5033	0.0241	0.0024
-
 # parties.roles tenderer q1	95.3214	0.0233	0.0023
 
 # parties.roles tenderer q4	93.9049	0.0230	0.0023
@@ -292,7 +300,8 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 # tender.status_complete	68.8670	0.0169	0.0017
 # tender.awardPeriod.startDate.yearmonth	67.2612	0.0165	0.0016
 # planning.estimatedDate.year	66.2734	0.0162	0.0016
-# tender.mainProcurementCategoryDetails q3	65.1773	0.0160	0.0016
+
+
 # tender.procurementMethodDetails q3	65.1128	0.0159	0.0016
 # tender.procuringEntity.id q1	63.6584	0.0156	0.0015
 # planning.items.classification.id.n3 q2	63.4044	0.0155	0.0015
@@ -309,7 +318,7 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 # awards.suppliers.id q2	57.0019	0.0140	0.0014
 # tender.items.classification.id.n1_13	56.9272	0.0139	0.0014
 # parties.details.legalEntityTypeDetail enquirer_3	56.1901	0.0138	0.0014
-# tender.mainProcurementCategoryDetails q4	56.1185	0.0137	0.0014
+
 # tender.coveredBy_2	55.4019	0.0136	0.0013
 # tender.items.classification.id.n5 q2	54.4952	0.0133	0.0013
 # tender.items.classification.id.n3 q4	53.9766	0.0132	0.0013
@@ -383,7 +392,7 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 # planning.items.classification.id.n2_2	33.9110	0.0083	0.0008
 # parties.roles enquirer q4	33.8374	0.0083	0.0008
 # tender.items.classification.id.n1_1_21	33.8267	0.0083	0.0008
-# tender.mainProcurementCategoryDetails q2	33.7712	0.0083	0.0008
+
 # planning.items.classification.id.n1_1_39	31.9398	0.0078	0.0008
 # tender.items.classification.id.n1_1	31.7712	0.0078	0.0008
 # planning.items.classification.id.n1_1_36	31.3219	0.0077	0.0008
