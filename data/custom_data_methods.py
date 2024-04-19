@@ -1,5 +1,5 @@
 from data.general_utils import count_length
-from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName, BuyerId, BuyerName
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -276,6 +276,24 @@ def get_tender_procuring_entity_name(ocds_data: dict, index: int) -> int:
 				return 1
 			
 	return 0
+
+def get_buyer_id(ocds_data: dict, index: int) -> int:
+	if 'buyer' in ocds_data:
+		buyer_id = ocds_data['buyer']['id']
+		if buyer_id and index == 3:
+			return 1
+		if buyer_id in BuyerId[index]:
+			return 1
+	return 0
+
+def get_buyer_name(ocds_data: dict, index: int) -> int:
+	if 'buyer' in ocds_data:
+		buyer_id = ocds_data['buyer']['id']
+		if buyer_id and index == 3:
+			return 1
+		if buyer_id in BuyerName[index]:
+			return 1
+	return 0
 # --- REMAINING---
 
 
@@ -355,13 +373,11 @@ def get_tender_procuring_entity_name(ocds_data: dict, index: int) -> int:
 # parties.details.EntityType payer_3	47.1255	0.0115	0.0011
 # planning.items.classification.id.n4 q1	46.5220	0.0114	0.0011
 # planning.items.classification.id.n4 q2	46.3638	0.0113	0.0011
-# buyer.id q1	46.3491	0.0113	0.0011
 # parties.roles supplier q2	45.9971	0.0113	0.0011
 # tender.items.classification.id.n4 q3	45.7239	0.0112	0.0011
 # contracts.investmentProjects.id q1	45.2154	0.0111	0.0011
 # parties.roles procuringEntity q4	45.0510	0.0110	0.0011
 # awards.suppliers.id q3	44.8417	0.0110	0.0011
-# buyer.name q1	44.3699	0.0109	0.0011
 # planning.items.classification.id.n3 q1	43.9676	0.0108	0.0011
 # parties.roles buyer q2	43.8875	0.0107	0.0011
 # tender.items.classification.id.n4 q4	43.5209	0.0107	0.0010
@@ -396,7 +412,6 @@ def get_tender_procuring_entity_name(ocds_data: dict, index: int) -> int:
 # parties.details.legalEntityTypeDetail supplier_4	34.7273	0.0085	0.0008
 # parties.details.EntityType payer_4	34.7144	0.0085	0.0008
 # parties.details.legalEntityTypeDetail payee_1	34.5656	0.0085	0.0008
-# buyer.name q2	34.3341	0.0084	0.0008
 # parties.details.legalEntityTypeDetail payee_4	34.1374	0.0084	0.0008
 # tender.coveredBy_5	34.1135	0.0083	0.0008
 # planning.items.classification.id.n2_2	33.9110	0.0083	0.0008
@@ -408,19 +423,15 @@ def get_tender_procuring_entity_name(ocds_data: dict, index: int) -> int:
 # planning.items.classification.id.n1_1_36	31.3219	0.0077	0.0008
 # planning.items.classification.id.n1_1_32	30.1865	0.0074	0.0007
 # tender.status_unsuccessful	29.7670	0.0073	0.0007
-# buyer.id q2	29.5432	0.0072	0.0007
 # tender.items.classification.id.n1_1_36	29.4745	0.0072	0.0007
 # parties.roles payer q1	29.3840	0.0072	0.0007
-# buyer.id q3	29.2707	0.0072	0.0007
 # tender.items.classification.id.n1_1_41	29.0564	0.0071	0.0007
 # awards.statusDetails_1	29.0442	0.0071	0.0007
 # planning.items.classification.id.n1_1_22	28.9872	0.0071	0.0007
 # tender.items.classification.id.n1_1_37	28.8278	0.0071	0.0007
-# buyer.name q4	28.7626	0.0070	0.0007
 # planning.items.classification.id.n2_5	28.6706	0.0070	0.0007
 # planning.items.classification.id.n1_1_1	28.5288	0.0070	0.0007
 # parties.roles payee q4	28.3609	0.0069	0.0007
-# buyer.id q4	28.2376	0.0069	0.0007
 # tender.items.classification.id.n2_17	28.1530	0.0069	0.0007
 # tender.lots.count	27.8663	0.0068	0.0007
 
@@ -430,7 +441,6 @@ def get_tender_procuring_entity_name(ocds_data: dict, index: int) -> int:
 # contracts.guarantees.obligations_10	26.6178	0.0065	0.0006
 # Tiempo de convocatoria LPN	26.3607	0.0065	0.0006
 # tender.items.classification.id.n1_1_4	25.6976	0.0063	0.0006
-# buyer.name q3	25.4083	0.0062	0.0006
 # tender.items.classification.id.n1_1_30	25.3838	0.0062	0.0006
 # tender.items.classification.id.n2_6	25.2369	0.0062	0.0006
 # parties.details.legalEntityTypeDetail supplier_8	25.0798	0.0061	0.0006
