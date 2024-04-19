@@ -1,5 +1,5 @@
 from data.general_utils import count_length
-from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -254,6 +254,17 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 			else:
 				count_arr[3] += 1
 	return count_arr
+
+def get_tender_procuring_entity_id(ocds_data: dict, index: int) -> int:
+	if 'tender' in ocds_data:
+		if 'procuringEntity' in ocds_data['tender']:
+			procuring_entity_id = ocds_data['tender']['procuringEntity']['id']
+			if procuring_entity_id and index == 3:
+				return 1
+			elif procuring_entity_id in TenderProcuringEntityId[index]:
+				return 1
+			
+	return 0
 # --- REMAINING---
 
 
@@ -296,14 +307,7 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 # Enmiendas del contrato	73.6042	0.0180	0.0018
 # parties.details.EntityType buyer_3	69.5061	0.0170	0.0017
 
-# tender.status_cancelled	69.2665	0.0170	0.0017
-# tender.status_complete	68.8670	0.0169	0.0017
-# tender.awardPeriod.startDate.yearmonth	67.2612	0.0165	0.0016
-# planning.estimatedDate.year	66.2734	0.0162	0.0016
 
-
-# tender.procurementMethodDetails q3	65.1128	0.0159	0.0016
-# tender.procuringEntity.id q1	63.6584	0.0156	0.0015
 # planning.items.classification.id.n3 q2	63.4044	0.0155	0.0015
 
 # tender.items.classification.id.n5 q3	60.6512	0.0148	0.0015
@@ -354,7 +358,6 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 # tender.items.classification.id.n4 q4	43.5209	0.0107	0.0010
 # tender.items.classification.id.n5 q1	43.4647	0.0106	0.0010
 # planning.items.classification.id.n3 q3	42.8678	0.0105	0.0010
-# tender.procuringEntity.id q4	42.4966	0.0104	0.0010
 # contracts.implementation.purchaseOrders.count	41.9523	0.0103	0.0010
 # tender.items.classification.id.n1_1_25	41.1033	0.0101	0.0010
 # tender.statusDetails_Desierta	40.8804	0.0100	0.0010
@@ -370,7 +373,6 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 # tender.techniques.hasElectronicAuction	38.2015	0.0093	0.0009
 # parties.roles payer q3	38.0953	0.0093	0.0009
 # parties.roles buyer q1	37.9550	0.0093	0.0009
-# tender.procuringEntity.id q2	37.7254	0.0092	0.0009
 # planning.items.classification.id.n1_9	37.5250	0.0092	0.0009
 # awards.suppliers.id q1	37.4722	0.0092	0.0009
 # planning.items.classification.id.n1_1_9	37.2277	0.0091	0.0009
@@ -427,7 +429,6 @@ def get_tender_submission_method_details(ocds_data: dict) -> int:
 # parties.details.legalEntityTypeDetail supplier_8	25.0798	0.0061	0.0006
 # planning.items.classification.id.n2_32	24.4227	0.0060	0.0006
 # tender.items.classification.id.n1_1_18	24.2481	0.0059	0.0006
-# tender.procuringEntity.id q3	23.7985	0.0058	0.0006
 # planning.items.classification.id.n1_1_23	23.5629	0.0058	0.0006
 # tender.awardCriteria_priceOnly	21.9174	0.0054	0.0005
 # planning.items.classification.id.n1_1_21	21.5398	0.0053	0.0005

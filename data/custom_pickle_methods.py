@@ -41,7 +41,7 @@ N1PlanningItemsClass = {'72': 0, '44': 1, '41': 2, '50': 3, '47': 4, '39': 5, '5
 
 TenderDocumentsDocumentTypeDetail = ['Llamado publicado', 'Adenda', 'Carta de Invitación', 'Instrucción a los Oferentes - Bienes y Servicios', 'Condiciones Generales del Contrato - Bienes y Servicios', 'Nota de Observacion', 'Pliego de bases y Condiciones', 'CDP', 'Antecedentes de Estimación de Costos', 'Plano de obra o cómputos métricos', 'Acta de Apertura', 'Pliego Electrónico de bases y Condiciones', 'otros']
 
-TenderEligibilityCriteria = [{'Restricciones: INHABILIDADES PREVISTAS EN EL ARTICULO 40 DE LA LEY 2051/03': 134148}, {}, {}]
+TenderEligibilityCriteria = [{'Restricciones: INHABILIDADES PREVISTAS EN EL ARTICULO 40 DE LA LEY 2051/03': 134148}, {}, {}, {}]
 
 TenderProcurementMethodDetails = [{'Contratación Directa': 88182}, {}, {'Concurso de Ofertas': 27028}]
 
