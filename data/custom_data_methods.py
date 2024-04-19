@@ -1,5 +1,5 @@
 from data.general_utils import count_length
-from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -265,6 +265,17 @@ def get_tender_procuring_entity_id(ocds_data: dict, index: int) -> int:
 				return 1
 			
 	return 0
+
+def get_tender_procuring_entity_name(ocds_data: dict, index: int) -> int:
+	if 'tender' in ocds_data:
+		if 'procuringEntity' in ocds_data['tender']:
+			procuring_entity_name = ocds_data['tender']['procuringEntity']['name']
+			if procuring_entity_name and index == 3:
+				return 1
+			elif procuring_entity_name in TenderProcuringEntityName[index]:
+				return 1
+			
+	return 0
 # --- REMAINING---
 
 
@@ -295,7 +306,6 @@ def get_tender_procuring_entity_id(ocds_data: dict, index: int) -> int:
 # parties.roles procuringEntity q1	83.2735	0.0204	0.0020
 # planning.items.classification.id.n2_44	81.7232	0.0200	0.0020
 # tender.tenderPeriod.startDate.year	81.1438	0.0199	0.0020
-# tender.procuringEntity.name q1	80.5938	0.0197	0.0019
 # planning.items.classification.id.n2_11	80.4943	0.0197	0.0019
 # tender.bidOpening.date.year	80.1329	0.0196	0.0019
 # tender.bidOpening.date.yearmonth	79.2195	0.0194	0.0019
@@ -331,7 +341,6 @@ def get_tender_procuring_entity_id(ocds_data: dict, index: int) -> int:
 # planning.items.classification.id.n4 q4	53.3195	0.0130	0.0013
 
 # tender.items.classification.id.n2_22	51.7908	0.0127	0.0012
-# tender.procuringEntity.name q2	51.4905	0.0126	0.0012
 # awards.status_1	51.4833	0.0126	0.0012
 # contracts.statusDetails_1	51.3826	0.0126	0.0012
 # parties.roles payee q2	51.0022	0.0125	0.0012
@@ -366,7 +375,6 @@ def get_tender_procuring_entity_id(ocds_data: dict, index: int) -> int:
 # tender.items.classification.id.n3 q3	40.3265	0.0099	0.0010
 # contracts.guarantees.obligations_2	40.1719	0.0098	0.0010
 # awards.suppliers.id q4	39.6343	0.0097	0.0010
-# tender.procuringEntity.name q3	39.3985	0.0096	0.0009
 # parties.roles payer q2	38.9314	0.0095	0.0009
 # contracts.status_2	38.8012	0.0095	0.0009
 # contracts.count	38.3238	0.0094	0.0009
@@ -414,7 +422,6 @@ def get_tender_procuring_entity_id(ocds_data: dict, index: int) -> int:
 # parties.roles payee q4	28.3609	0.0069	0.0007
 # buyer.id q4	28.2376	0.0069	0.0007
 # tender.items.classification.id.n2_17	28.1530	0.0069	0.0007
-# tender.procuringEntity.name q4	28.0404	0.0069	0.0007
 # tender.lots.count	27.8663	0.0068	0.0007
 
 # planning.items.classification.id.n1_1	27.0247	0.0066	0.0007
