@@ -1,5 +1,6 @@
 from data.general_utils import count_length
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName, BuyerId, BuyerName, AwardSuppliers
+from data.custom_pickle_methods import N5TenderItemsClass, N3TenderItemsClass
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -318,6 +319,42 @@ def get_contract_implementation_purchase_orders(ocds_data: dict) -> int:
 				if 'purchaseOrders' in contract['implementation']:
 					count += len(contract['implementation']['purchaseOrders'])
 	return count
+
+def get_tender_items_classification_id_n5(ocds_data: dict) -> list:
+	count_arr = [0, 0, 0, 0]
+	if 'tender' in ocds_data:
+		if 'items' in ocds_data['tender']:
+			for item in ocds_data['tender']['items']:
+				if 'classification' in item:
+					if 'id' in item['classification']:
+						if item['classification']['id'] in N5TenderItemsClass[0]:
+							count_arr[0] += 1
+						elif item['classification']['id'] in N5TenderItemsClass[1]:
+							count_arr[1] += 1
+						elif item['classification']['id'] in N5TenderItemsClass[2]:
+							count_arr[2] += 1
+						else:
+							count_arr[3] += 1
+	return count_arr
+
+def get_tender_items_classification_id_n3(ocds_data: dict) -> list:
+	count_arr = [0, 0, 0, 0]
+	if 'tender' in ocds_data:
+		if 'items' in ocds_data['tender']:
+			for item in ocds_data['tender']['items']:
+				if 'classification' in item:
+					if 'id' in item['classification']:
+						id = item['classification']['id'][0:6]
+						if id in N3TenderItemsClass[0]:
+							count_arr[0] += 1
+						elif id in N3TenderItemsClass[1]:
+							count_arr[1] += 1
+						elif id in N3TenderItemsClass[2]:
+							count_arr[2] += 1
+						else:
+							count_arr[3] += 1
+	return count_arr
+
 # --- REMAINING---
 
 
@@ -345,13 +382,13 @@ def get_contract_implementation_purchase_orders(ocds_data: dict) -> int:
 
 # planning.items.classification.id.n2_26	75.3552	0.0184	0.0018
 
-# tender.items.classification.id.n5 q4	73.6508	0.0180	0.0018
+
 # parties.details.EntityType buyer_3	69.5061	0.0170	0.0017
 
 
 # planning.items.classification.id.n3 q2	63.4044	0.0155	0.0015
 
-# tender.items.classification.id.n5 q3	60.6512	0.0148	0.0015
+
 
 # planning.items.classification.id.n4 q3	59.3996	0.0145	0.0014
 # parties.roles procuringEntity q2	59.2857	0.0145	0.0014
@@ -365,8 +402,7 @@ def get_contract_implementation_purchase_orders(ocds_data: dict) -> int:
 # parties.details.legalEntityTypeDetail enquirer_3	56.1901	0.0138	0.0014
 
 # tender.coveredBy_2	55.4019	0.0136	0.0013
-# tender.items.classification.id.n5 q2	54.4952	0.0133	0.0013
-# tender.items.classification.id.n3 q4	53.9766	0.0132	0.0013
+
 # parties.roles procuringEntity q3	53.9075	0.0132	0.0013
 # planning.items.classification.id.n3 q4	53.3700	0.0131	0.0013
 # planning.items.classification.id.n4 q4	53.3195	0.0130	0.0013
@@ -394,13 +430,12 @@ def get_contract_implementation_purchase_orders(ocds_data: dict) -> int:
 # planning.items.classification.id.n3 q1	43.9676	0.0108	0.0011
 # parties.roles buyer q2	43.8875	0.0107	0.0011
 # tender.items.classification.id.n4 q4	43.5209	0.0107	0.0010
-# tender.items.classification.id.n5 q1	43.4647	0.0106	0.0010
+
 # planning.items.classification.id.n3 q3	42.8678	0.0105	0.0010
 # tender.items.classification.id.n1_1_25	41.1033	0.0101	0.0010
 # tender.statusDetails_Desierta	40.8804	0.0100	0.0010
-# tender.items.classification.id.n3 q2	40.8509	0.0100	0.0010
 # parties.roles supplier q1	40.5900	0.0099	0.0010
-# tender.items.classification.id.n3 q3	40.3265	0.0099	0.0010
+# 
 # contracts.guarantees.obligations_2	40.1719	0.0098	0.0010
 
 # parties.roles payer q2	38.9314	0.0095	0.0009
@@ -461,8 +496,7 @@ def get_contract_implementation_purchase_orders(ocds_data: dict) -> int:
 # planning.items.classification.id.n1_1_23	23.5629	0.0058	0.0006
 # tender.awardCriteria_priceOnly	21.9174	0.0054	0.0005
 # planning.items.classification.id.n1_1_21	21.5398	0.0053	0.0005
-
-# tender.items.classification.id.n3 q1	21.0348	0.0051	0.0005
+# tender.
 # tender.items.classification.id.n1_1_24	21.0230	0.0051	0.0005
 # planning.items.classification.id.n1_1_17	20.9641	0.0051	0.0005
 # parties.details.legalEntityTypeDetail supplier_2	20.4508	0.0050	0.0005

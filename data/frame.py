@@ -1,6 +1,8 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
 from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name, get_buyer_id, get_buyer_name, get_awards_supplier_id, get_contract_implementation_purchase_orders
+from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n3
+
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
 # https://www.contrataciones.gov.py/buscador/licitaciones.html?nro_nombre_licitacion=&fecha_desde=01-07-2023&fecha_hasta=31-08-2023&tipo_fecha=PUB&marcas%5B%5D=impugnado&convocante_tipo=&convocante_nombre_codigo=&codigo_contratacion=&catalogo%5Bcodigos_catalogo_n4%5D=&page=1&order=&convocante_codigos=&convocante_tipo_codigo=&unidad_contratacion_codigo=&catalogo%5Bcodigos_catalogo_n4_label%5D=
@@ -353,6 +355,20 @@ def get_pd_dataframe(ocds_data: dict):
 	data['awards.suppliers.id q3'] = award_supp_id[2]
 	data['awards.suppliers.id q4'] = award_supp_id[3]
 
+	tender_items_n5 = get_tender_items_classification_id_n5(ocds_data)
+	tender_items_n3 = get_tender_items_classification_id_n3(ocds_data)
+	
+	data['tender.items.classification.id.n5 q1'] = tender_items_n5[0]
+	data['tender.items.classification.id.n5 q2'] = tender_items_n5[1]
+	data['tender.items.classification.id.n5 q3'] = tender_items_n5[2]
+	data['tender.items.classification.id.n5 q4'] = tender_items_n5[3]
+
+	data['tender.items.classification.id.n3 q1'] = tender_items_n3[0]
+	data['tender.items.classification.id.n3 q2'] = tender_items_n3[1]
+	data['tender.items.classification.id.n3 q3'] = tender_items_n3[2]
+	data['tender.items.classification.id.n3 q4'] = tender_items_n3[3]
+
+	tender_items_n5[0]
 	data_df = pd.DataFrame([data])
 	return data_df, data
 
