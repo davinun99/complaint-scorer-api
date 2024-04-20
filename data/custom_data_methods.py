@@ -310,6 +310,14 @@ def get_awards_supplier_id(ocds_data: dict) -> int:
 					else:
 						count_arr[3] += 1
 	return count_arr
+def get_contract_implementation_purchase_orders(ocds_data: dict) -> int:
+	count = 0
+	if 'contracts' in ocds_data:
+		for contract in ocds_data['contracts']:
+			if 'implementation' in contract:
+				if 'purchaseOrders' in contract['implementation']:
+					count += len(contract['implementation']['purchaseOrders'])
+	return count
 # --- REMAINING---
 
 
@@ -368,7 +376,7 @@ def get_awards_supplier_id(ocds_data: dict) -> int:
 # contracts.statusDetails_1	51.3826	0.0126	0.0012
 # parties.roles payee q2	51.0022	0.0125	0.0012
 # parties.details.EntityType procuringEntity_3	50.7915	0.0124	0.0012
-# tender.statusDetails_En Evaluacion (Cerrada)	49.8098	0.0122	0.0012
+
 # parties.details.EntityType buyer_1	49.4325	0.0121	0.0012
 # parties.roles supplier q3	49.1994	0.0120	0.0012
 # parties.details.EntityType buyer_4	48.5794	0.0119	0.0012
@@ -388,7 +396,6 @@ def get_awards_supplier_id(ocds_data: dict) -> int:
 # tender.items.classification.id.n4 q4	43.5209	0.0107	0.0010
 # tender.items.classification.id.n5 q1	43.4647	0.0106	0.0010
 # planning.items.classification.id.n3 q3	42.8678	0.0105	0.0010
-# contracts.implementation.purchaseOrders.count	41.9523	0.0103	0.0010
 # tender.items.classification.id.n1_1_25	41.1033	0.0101	0.0010
 # tender.statusDetails_Desierta	40.8804	0.0100	0.0010
 # tender.items.classification.id.n3 q2	40.8509	0.0100	0.0010
