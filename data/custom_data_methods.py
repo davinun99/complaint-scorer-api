@@ -1,6 +1,6 @@
 from data.general_utils import count_length
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName, BuyerId, BuyerName, AwardSuppliers
-from data.custom_pickle_methods import N5TenderItemsClass, N3TenderItemsClass
+from data.custom_pickle_methods import N5TenderItemsClass, N4PlanningItemsClass, N3TenderItemsClass
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -350,6 +350,24 @@ def get_tender_items_classification_id_n3(ocds_data: dict) -> list:
 						elif id in N3TenderItemsClass[1]:
 							count_arr[1] += 1
 						elif id in N3TenderItemsClass[2]:
+							count_arr[2] += 1
+						else:
+							count_arr[3] += 1
+	return count_arr
+
+def get_tender_items_classification_id_n4(ocds_data: dict) -> list:
+	count_arr = [0, 0, 0, 0]
+	if 'tender' in ocds_data:
+		if 'items' in ocds_data['tender']:
+			for item in ocds_data['tender']['items']:
+				if 'classification' in item:
+					if 'id' in item['classification']:
+						id = item['classification']['id'][0:8]
+						if id in N4PlanningItemsClass[0]:
+							count_arr[0] += 1
+						elif id in N4PlanningItemsClass[1]:
+							count_arr[1] += 1
+						elif id in N4PlanningItemsClass[2]:
 							count_arr[2] += 1
 						else:
 							count_arr[3] += 1
