@@ -1,5 +1,5 @@
 from data.general_utils import count_length
-from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName, BuyerId, BuyerName
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName, BuyerId, BuyerName, AwardSuppliers
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -294,6 +294,22 @@ def get_buyer_name(ocds_data: dict, index: int) -> int:
 		if buyer_id in BuyerName[index]:
 			return 1
 	return 0
+
+def get_awards_supplier_id(ocds_data: dict) -> int:
+	count_arr = [0, 0, 0, 0]
+	if 'awards' in ocds_data:
+		for award in ocds_data['awards']:
+			if 'suppliers' in award:
+				for supplier in award['suppliers']:
+					if supplier['id'] in AwardSuppliers[0]:
+						count_arr[0] += 1
+					elif supplier['id'] in AwardSuppliers[1]:
+						count_arr[1] += 1
+					elif supplier['id'] in AwardSuppliers[2]:
+						count_arr[2] += 1
+					else:
+						count_arr[3] += 1
+	return count_arr
 # --- REMAINING---
 
 
@@ -312,27 +328,16 @@ def get_buyer_name(ocds_data: dict, index: int) -> int:
 
 # parties.details.legalEntityTypeDetail supplier_3	90.5369	0.0222	0.0022
 
-# contracts.amendments.count	88.5945	0.0217	0.0021
-
-# tender.statusDetails_Anulada o Cancelada	87.4196	0.0214	0.0021
-
 # contracts.status_1	86.9856	0.0213	0.0021
-# tender.awardCriteriaDetails_Por Item	85.5137	0.0209	0.0021
 # tender.coveredBy_1	84.7357	0.0207	0.0020
 # contracts.guarantees.obligations_1	83.9057	0.0205	0.0020
-# tender.awardPeriod.startDate.year	83.6274	0.0205	0.0020
 # parties.roles procuringEntity q1	83.2735	0.0204	0.0020
 # planning.items.classification.id.n2_44	81.7232	0.0200	0.0020
-# tender.tenderPeriod.startDate.year	81.1438	0.0199	0.0020
 # planning.items.classification.id.n2_11	80.4943	0.0197	0.0019
-# tender.bidOpening.date.year	80.1329	0.0196	0.0019
-# tender.bidOpening.date.yearmonth	79.2195	0.0194	0.0019
 
-# tender.awardCriteriaDetails_Por Lote	75.5907	0.0185	0.0018
 # planning.items.classification.id.n2_26	75.3552	0.0184	0.0018
 
 # tender.items.classification.id.n5 q4	73.6508	0.0180	0.0018
-# Enmiendas del contrato	73.6042	0.0180	0.0018
 # parties.details.EntityType buyer_3	69.5061	0.0170	0.0017
 
 
@@ -347,7 +352,7 @@ def get_buyer_name(ocds_data: dict, index: int) -> int:
 # parties.details.legalEntityTypeDetail payee_3	58.2384	0.0143	0.0014
 # tender.items.classification.id.n2_1	57.3918	0.0140	0.0014
 
-# awards.suppliers.id q2	57.0019	0.0140	0.0014
+
 # tender.items.classification.id.n1_13	56.9272	0.0139	0.0014
 # parties.details.legalEntityTypeDetail enquirer_3	56.1901	0.0138	0.0014
 
@@ -377,7 +382,7 @@ def get_buyer_name(ocds_data: dict, index: int) -> int:
 # tender.items.classification.id.n4 q3	45.7239	0.0112	0.0011
 # contracts.investmentProjects.id q1	45.2154	0.0111	0.0011
 # parties.roles procuringEntity q4	45.0510	0.0110	0.0011
-# awards.suppliers.id q3	44.8417	0.0110	0.0011
+
 # planning.items.classification.id.n3 q1	43.9676	0.0108	0.0011
 # parties.roles buyer q2	43.8875	0.0107	0.0011
 # tender.items.classification.id.n4 q4	43.5209	0.0107	0.0010
@@ -390,7 +395,7 @@ def get_buyer_name(ocds_data: dict, index: int) -> int:
 # parties.roles supplier q1	40.5900	0.0099	0.0010
 # tender.items.classification.id.n3 q3	40.3265	0.0099	0.0010
 # contracts.guarantees.obligations_2	40.1719	0.0098	0.0010
-# awards.suppliers.id q4	39.6343	0.0097	0.0010
+
 # parties.roles payer q2	38.9314	0.0095	0.0009
 # contracts.status_2	38.8012	0.0095	0.0009
 # contracts.count	38.3238	0.0094	0.0009
@@ -398,7 +403,7 @@ def get_buyer_name(ocds_data: dict, index: int) -> int:
 # parties.roles payer q3	38.0953	0.0093	0.0009
 # parties.roles buyer q1	37.9550	0.0093	0.0009
 # planning.items.classification.id.n1_9	37.5250	0.0092	0.0009
-# awards.suppliers.id q1	37.4722	0.0092	0.0009
+
 # planning.items.classification.id.n1_1_9	37.2277	0.0091	0.0009
 # planning.items.classification.id.n2_1	37.1796	0.0091	0.0009
 # tender.items.classification.id.n4 q2	36.7683	0.0090	0.0009
@@ -668,7 +673,6 @@ def get_buyer_name(ocds_data: dict, index: int) -> int:
 # parties.details.legalEntityTypeDetail payee_5	1.7191	0.0004	0.0
 
 # contracts.status_3	1.6861	0.0004	0.0
-# awards.value.amount_usd	1.5187	0.0004	0.0
 # parties.details.legalEntityTypeDetail payee_11	1.5046	0.0004	0.0
 
 # planning.items.classification.id.n1_11	1.3535	0.0003	0.0
@@ -676,7 +680,6 @@ def get_buyer_name(ocds_data: dict, index: int) -> int:
 # planning.items.classification.id.n1_1_6	1.2222	0.0003	0.0
 # planning.items.classification.id.n2_43	1.1334	0.0003	0.0
 # contracts.guarantees.obligations_8	1.1224	0.0003	0.0
-# tender.awardCriteriaDetails_Combinado	1.0837	0.0003	0.0
 
 # tender.items.classification.id.n1_1_47	1.0406	0.0003	0.0
 

@@ -1,6 +1,6 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name, get_buyer_id, get_buyer_name
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name, get_buyer_id, get_buyer_name, get_awards_supplier_id
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
 # https://www.contrataciones.gov.py/buscador/licitaciones.html?nro_nombre_licitacion=&fecha_desde=01-07-2023&fecha_hasta=31-08-2023&tipo_fecha=PUB&marcas%5B%5D=impugnado&convocante_tipo=&convocante_nombre_codigo=&codigo_contratacion=&catalogo%5Bcodigos_catalogo_n4%5D=&page=1&order=&convocante_codigos=&convocante_tipo_codigo=&unidad_contratacion_codigo=&catalogo%5Bcodigos_catalogo_n4_label%5D=
@@ -164,8 +164,9 @@ def get_pd_dataframe(ocds_data: dict):
 	if 'enquiries' in ocds_data['tender']:
 		data['tender.enquiries total'] = count_length(ocds_data['tender']['enquiries'])
 		data['tender.enquiries.count'] = count_length(ocds_data['tender']['enquiries'])
-		data['contracts.amendments.count']= count_ammenments(ocds_data)
 	
+	data['contracts.amendments.count']= count_ammenments(ocds_data)
+	data['Enmiendas del contrato'] = count_ammenments(ocds_data) > 0
 	if 'procurementIntention' in ocds_data['tender']:
 		data['tender.procurementIntention.status_complete'] = ocds_data['tender']['procurementIntention']['status'] == 'complete'
 		data['tender.procurementIntention.statusDetails_Ejecutada'] = ocds_data['tender']['procurementIntention']['statusDetails'] == 'Ejecutada'
@@ -346,6 +347,12 @@ def get_pd_dataframe(ocds_data: dict):
 	data['buyer.name q2'] = get_buyer_name(ocds_data, 1)
 	data['buyer.name q3'] = get_buyer_name(ocds_data, 2)
 	data['buyer.name q4'] = get_buyer_name(ocds_data, 3)
+
+	award_supp_id = get_awards_supplier_id(ocds_data)
+	data['awards.suppliers.id q1'] = award_supp_id[0]
+	data['awards.suppliers.id q2'] = award_supp_id[1]
+	data['awards.suppliers.id q3'] = award_supp_id[2]
+	data['awards.suppliers.id q4'] = award_supp_id[3]
 
 	data_df = pd.DataFrame([data])
 	return data_df, data
@@ -703,10 +710,6 @@ def get_pd_dataframe(ocds_data: dict):
 # awards.documents.DocumentTypeDetails_19
 # awards.documents.DocumentTypeDetails_20
 # awards.documents.DocumentTypeDetails_21
-# awards.suppliers.id q1
-# awards.suppliers.id q2
-# awards.suppliers.id q3
-# awards.suppliers.id q4
 # awards.status_1
 # awards.status_2
 # awards.status_3
