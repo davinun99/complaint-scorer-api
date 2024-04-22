@@ -1,6 +1,6 @@
 from data.general_utils import count_length
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName, BuyerId, BuyerName, AwardSuppliers
-from data.custom_pickle_methods import N5TenderItemsClass, N4PlanningItemsClass, N3TenderItemsClass, N3PlanningItemsClass, N4PlanningItemsClass, ContactInvestmentProjectsId
+from data.custom_pickle_methods import N5TenderItemsClass, N4PlanningItemsClass, N3TenderItemsClass, N3PlanningItemsClass, N4PlanningItemsClass, ContactInvestmentProjectsId, PartiesRoles
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -409,27 +409,35 @@ def get_tender_items_classification_id_n4(ocds_data: dict) -> list:
 							count_arr[3] += 1
 	return count_arr
 
+def get_parties_roles(ocds_data, role: str) -> int:
+	count_arr = [0, 0, 0, 0]
+	# PartiesRoles
+	if 'parties' in ocds_data:
+		for party in ocds_data['parties']:
+			if 'name' in party:
+				party_name = party['name']
+				if 'roles' in party and role in party['roles']:
+					if party_name in PartiesRoles[role]['firstq_map']:
+						count_arr[0] += 1
+					elif party_name in PartiesRoles[role]['secondq_map']:
+						count_arr[1] += 1
+					elif party_name in PartiesRoles[role]['thirdq_map']:
+						count_arr[2] += 1
+					else:
+						count_arr[3] += 1
+						
+	return count_arr
 # --- REMAINING---
 
 
-# parties.roles notifiedSupplier q2	165.2717	0.0404	0.0040
-# parties.roles notifiedSupplier q3	142.7743	0.0349	0.0034
-# parties.roles notifiedSupplier q4	140.5254	0.0344	0.0034
-# parties.roles tenderer q3	137.9390	0.0338	0.0033
-# parties.roles notifiedSupplier q1	120.8446	0.0296	0.0029
-
-# parties.roles tenderer q1	95.3214	0.0233	0.0023
-
-# parties.roles tenderer q4	93.9049	0.0230	0.0023
 # planning.items.classification.id.n1_16	91.7993	0.0225	0.0022
-# parties.roles tenderer q2	91.6072	0.0224	0.0022
 
 # parties.details.legalEntityTypeDetail supplier_3	90.5369	0.0222	0.0022
 
 # contracts.status_1	86.9856	0.0213	0.0021
 # tender.coveredBy_1	84.7357	0.0207	0.0020
 # contracts.guarantees.obligations_1	83.9057	0.0205	0.0020
-# parties.roles procuringEntity q1	83.2735	0.0204	0.0020
+
 # planning.items.classification.id.n2_44	81.7232	0.0200	0.0020
 # planning.items.classification.id.n2_11	80.4943	0.0197	0.0019
 
@@ -438,7 +446,7 @@ def get_tender_items_classification_id_n4(ocds_data: dict) -> list:
 
 # parties.details.EntityType buyer_3	69.5061	0.0170	0.0017
 
-# parties.roles procuringEntity q2	59.2857	0.0145	0.0014
+
 # parties.details.legalEntityTypeDetail supplier_1	58.8990	0.0144	0.0014
 # parties.details.EntityType procuringEntity_4	58.3922	0.0143	0.0014
 # parties.details.legalEntityTypeDetail payee_3	58.2384	0.0143	0.0014
@@ -450,59 +458,50 @@ def get_tender_items_classification_id_n4(ocds_data: dict) -> list:
 
 # tender.coveredBy_2	55.4019	0.0136	0.0013
 
-# parties.roles procuringEntity q3	53.9075	0.0132	0.0013
 
 # tender.items.classification.id.n2_22	51.7908	0.0127	0.0012
 # awards.status_1	51.4833	0.0126	0.0012
 # contracts.statusDetails_1	51.3826	0.0126	0.0012
-# parties.roles payee q2	51.0022	0.0125	0.0012
+
 # parties.details.EntityType procuringEntity_3	50.7915	0.0124	0.0012
 
 # parties.details.EntityType buyer_1	49.4325	0.0121	0.0012
-# parties.roles supplier q3	49.1994	0.0120	0.0012
+
 # parties.details.EntityType buyer_4	48.5794	0.0119	0.0012
-# parties.roles payee q3	48.4246	0.0119	0.0012
-# parties.roles supplier q4	47.5671	0.0116	0.0011
+
+
 # parties.details.EntityType procuringEntity_1	47.3632	0.0116	0.0011
 # parties.details.EntityType payer_3	47.1255	0.0115	0.0011
-# parties.roles supplier q2	45.9971	0.0113	0.0011
+
 
 # contracts.investmentProjects.id q1	45.2154	0.0111	0.0011
-# parties.roles procuringEntity q4	45.0510	0.0110	0.0011
 
-# parties.roles buyer q2	43.8875	0.0107	0.0011
+
 
 
 # tender.items.classification.id.n1_1_25	41.1033	0.0101	0.0010
 
-# parties.roles supplier q1	40.5900	0.0099	0.0010
+
 # 
 # contracts.guarantees.obligations_2	40.1719	0.0098	0.0010
 
-# parties.roles payer q2	38.9314	0.0095	0.0009
+
 # contracts.status_2	38.8012	0.0095	0.0009
 
-
-# parties.roles payer q3	38.0953	0.0093	0.0009
-# parties.roles buyer q1	37.9550	0.0093	0.0009
 # planning.items.classification.id.n1_9	37.5250	0.0092	0.0009
 
 # planning.items.classification.id.n1_1_9	37.2277	0.0091	0.0009
 # planning.items.classification.id.n2_1	37.1796	0.0091	0.0009
 
-# parties.roles payer q4	36.5670	0.0089	0.0009
-# parties.roles payee q1	36.2886	0.0089	0.0009
 # tender.items.classification.id.n1_1_1	36.0149	0.0088	0.0009
 # tender.items.classification.id.n2_3	35.8347	0.0088	0.0009
-# parties.roles buyer q3	35.6841	0.0087	0.0009
-# parties.roles buyer q4	35.2000	0.0086	0.0008
+
 # parties.details.legalEntityTypeDetail supplier_4	34.7273	0.0085	0.0008
 # parties.details.EntityType payer_4	34.7144	0.0085	0.0008
 # parties.details.legalEntityTypeDetail payee_1	34.5656	0.0085	0.0008
 # parties.details.legalEntityTypeDetail payee_4	34.1374	0.0084	0.0008
 # tender.coveredBy_5	34.1135	0.0083	0.0008
 # planning.items.classification.id.n2_2	33.9110	0.0083	0.0008
-# parties.roles enquirer q4	33.8374	0.0083	0.0008
 # tender.items.classification.id.n1_1_21	33.8267	0.0083	0.0008
 
 # planning.items.classification.id.n1_1_39	31.9398	0.0078	0.0008
@@ -511,14 +510,14 @@ def get_tender_items_classification_id_n4(ocds_data: dict) -> list:
 # planning.items.classification.id.n1_1_32	30.1865	0.0074	0.0007
 
 # tender.items.classification.id.n1_1_36	29.4745	0.0072	0.0007
-# parties.roles payer q1	29.3840	0.0072	0.0007
+
 # tender.items.classification.id.n1_1_41	29.0564	0.0071	0.0007
 # awards.statusDetails_1	29.0442	0.0071	0.0007
 # planning.items.classification.id.n1_1_22	28.9872	0.0071	0.0007
 # tender.items.classification.id.n1_1_37	28.8278	0.0071	0.0007
 # planning.items.classification.id.n2_5	28.6706	0.0070	0.0007
 # planning.items.classification.id.n1_1_1	28.5288	0.0070	0.0007
-# parties.roles payee q4	28.3609	0.0069	0.0007
+
 # tender.items.classification.id.n2_17	28.1530	0.0069	0.0007
 
 
@@ -549,7 +548,7 @@ def get_tender_items_classification_id_n4(ocds_data: dict) -> list:
 
 
 # tender.items.classification.id.n1_1_15	19.4336	0.0048	0.0005
-# parties.roles enquirer q3	19.3364	0.0047	0.0005
+
 # planning.items.classification.id.n1_1_19	19.3093	0.0047	0.0005
 # tender.items.classification.id.n1_1_45	19.1834	0.0047	0.0005
 # tender.items.classification.id.n1_4	19.1500	0.0047	0.0005
@@ -599,7 +598,6 @@ def get_tender_items_classification_id_n4(ocds_data: dict) -> list:
 # tender.items.classification.id.n1_2	11.5564	0.0028	0.0003
 # Tiempo de Convocatoria CO	11.5323	0.0028	0.0003
 # planning.items.classification.id.n1_1_37	11.3662	0.0028	0.0003
-# parties.roles enquirer q1	11.2491	0.0028	0.0003
 # awards.statusDetails_5	11.2291	0.0027	0.0003
 # tender.items.classification.id.n1_6	11.0101	0.0027	0.0003
 # planning.items.classification.id.n2_21	11.0	0.0027	0.0003
@@ -638,7 +636,6 @@ def get_tender_items_classification_id_n4(ocds_data: dict) -> list:
 # tender.items.classification.id.n1_1_34	8.3756	0.0020	0.0002
 # planning.items.classification.id.n1_15	8.3344	0.0020	0.0002
 # tender.items.classification.id.n1_1_3	8.1909	0.0020	0.0002
-# parties.roles enquirer q2	8.1890	0.0020	0.0002
 # tender.items.classification.id.n1_1_5	8.1823	0.0020	0.0002
 # tender.items.classification.id.n1_1_38	7.8390	0.0019	0.0002
 # parties.details.EntityType procuringEntity_2	7.7643	0.0019	0.0002

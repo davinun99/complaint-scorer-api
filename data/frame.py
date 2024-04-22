@@ -1,7 +1,7 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
 from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name, get_buyer_id, get_buyer_name, get_awards_supplier_id, get_contract_implementation_purchase_orders
-from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4
+from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles
 
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
@@ -385,6 +385,54 @@ def get_pd_dataframe(ocds_data: dict):
 	data['planning.items.classification.id.n4 q2'] = planning_items_class_n4[1]
 	data['planning.items.classification.id.n4 q3'] = planning_items_class_n4[2]
 	data['planning.items.classification.id.n4 q4'] = planning_items_class_n4[3]
+
+	parties_roles_notifiedSupplier = get_parties_roles(ocds_data, 'notifiedSupplier')
+	data['parties.roles notifiedSupplier q1'] = parties_roles_notifiedSupplier[0]
+	data['parties.roles notifiedSupplier q2'] = parties_roles_notifiedSupplier[1]
+	data['parties.roles notifiedSupplier q3'] = parties_roles_notifiedSupplier[2]
+	data['parties.roles notifiedSupplier q4'] = parties_roles_notifiedSupplier[3]
+	
+	parties_roles_tenderer = get_parties_roles(ocds_data, 'tenderer')
+	data['parties.roles tenderer q1'] = parties_roles_tenderer[0]
+	data['parties.roles tenderer q2'] = parties_roles_tenderer[1]
+	data['parties.roles tenderer q3'] = parties_roles_tenderer[2]
+	data['parties.roles tenderer q4'] = parties_roles_tenderer[3]
+	
+	parties_roles_procuring = get_parties_roles(ocds_data, 'procuringEntity')
+	data['parties.roles procuringEntity q1'] = parties_roles_procuring[0]
+	data['parties.roles procuringEntity q2'] = parties_roles_procuring[1]
+	data['parties.roles procuringEntity q3'] = parties_roles_procuring[2]
+	data['parties.roles procuringEntity q4'] = parties_roles_procuring[3]
+	
+	parties_roles_payee = get_parties_roles(ocds_data, 'payee')
+	data['parties.roles payee q1'] = parties_roles_payee[0]
+	data['parties.roles payee q2'] = parties_roles_payee[1]
+	data['parties.roles payee q3'] = parties_roles_payee[2]
+	data['parties.roles payee q4'] = parties_roles_payee[3]
+
+	parties_roles_supplier = get_parties_roles(ocds_data, 'supplier')
+	data['parties.roles supplier q1'] = parties_roles_supplier[0]
+	data['parties.roles supplier q2'] = parties_roles_supplier[1]
+	data['parties.roles supplier q3'] = parties_roles_supplier[2]
+	data['parties.roles supplier q4'] = parties_roles_supplier[3]
+
+	parties_roles_buyer = get_parties_roles(ocds_data, 'buyer')
+	data['parties.roles buyer q1'] = parties_roles_buyer[0]
+	data['parties.roles buyer q2'] = parties_roles_buyer[1]
+	data['parties.roles buyer q3'] = parties_roles_buyer[2]
+	data['parties.roles buyer q4'] = parties_roles_buyer[3]
+
+	parties_roles_payer = get_parties_roles(ocds_data, 'payer')
+	data['parties.roles payer q1'] = parties_roles_payer[0]
+	data['parties.roles payer q2'] = parties_roles_payer[1]
+	data['parties.roles payer q3'] = parties_roles_payer[2]
+	data['parties.roles payer q4'] = parties_roles_payer[3]
+
+	parties_roles_enquirer = get_parties_roles(ocds_data, 'enquirer')
+	data['parties.roles enquirer q1'] = parties_roles_enquirer[0]
+	data['parties.roles enquirer q2'] = parties_roles_enquirer[1]
+	data['parties.roles enquirer q3'] = parties_roles_enquirer[2]
+	data['parties.roles enquirer q4'] = parties_roles_enquirer[3]
 
 	tender_items_n5[0]
 	data_df = pd.DataFrame([data])
@@ -1001,42 +1049,7 @@ def get_pd_dataframe(ocds_data: dict):
 # parties.details.legalEntityTypeDetail notifiedSupplier_23
 # parties.details.legalEntityTypeDetail notifiedSupplier_24
 # parties.details.legalEntityTypeDetail notifiedSupplier_25
-# parties.roles candidate q1
-# parties.roles candidate q2
-# parties.roles candidate q3
-# parties.roles candidate q4
-# parties.roles enquirer q1
-# parties.roles enquirer q2
-# parties.roles enquirer q3
-# parties.roles enquirer q4
-# parties.roles payer q1
-# parties.roles payer q2
-# parties.roles payer q3
-# parties.roles payer q4
-# parties.roles payee q1
-# parties.roles payee q2
-# parties.roles payee q3
-# parties.roles payee q4
-# parties.roles supplier q1
-# parties.roles supplier q2
-# parties.roles supplier q3
-# parties.roles supplier q4
-# parties.roles procuringEntity q1
-# parties.roles procuringEntity q2
-# parties.roles procuringEntity q3
-# parties.roles procuringEntity q4
-# parties.roles buyer q1
-# parties.roles buyer q2
-# parties.roles buyer q3
-# parties.roles buyer q4
-# parties.roles tenderer q1
-# parties.roles tenderer q2
-# parties.roles tenderer q3
-# parties.roles tenderer q4
-# parties.roles notifiedSupplier q1
-# parties.roles notifiedSupplier q2
-# parties.roles notifiedSupplier q3
-# parties.roles notifiedSupplier q4
+
 # buyer.id q1
 # buyer.id q2
 # buyer.id q3
