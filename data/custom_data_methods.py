@@ -1,6 +1,6 @@
 from data.general_utils import count_length
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName, BuyerId, BuyerName, AwardSuppliers
-from data.custom_pickle_methods import N5TenderItemsClass, N4PlanningItemsClass, N3TenderItemsClass, N3PlanningItemsClass, N4PlanningItemsClass, ContactInvestmentProjectsId, PartiesRoles
+from data.custom_pickle_methods import N5TenderItemsClass, N4PlanningItemsClass, N3TenderItemsClass, N3PlanningItemsClass, N4PlanningItemsClass, ContactInvestmentProjectsId, PartiesRoles, N1PlanningItemsClass
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -427,14 +427,36 @@ def get_parties_roles(ocds_data, role: str) -> int:
 						count_arr[3] += 1
 						
 	return count_arr
+
+def get_contract_status(ocds_data: dict, status: str) -> int:
+	count = 0
+	if 'contracts' in ocds_data:
+		for contract in ocds_data['contracts']:
+			if 'status' in contract and contract['status'] == status:
+				count += 1
+	return count
+
+def get_planning_items_class_id_n1_arr(ocds_data: dict) -> list:
+	res = [0] * 16
+	if 'planning' in ocds_data:
+		if 'items' in ocds_data['planning']:
+			for item in ocds_data['planning']['items']:
+				if 'classification' in item:
+					if 'id' in item['classification']:
+						id = item['classification']['id'][0:2]
+						for i in range(15):
+							if id in N1PlanningItemsClass:
+								index = N1PlanningItemsClass[id]
+								res[index] += 1
+								break
+						else:
+							res[15] += 1
+	return res
+
 # --- REMAINING---
-
-
-# planning.items.classification.id.n1_16	91.7993	0.0225	0.0022
 
 # parties.details.legalEntityTypeDetail supplier_3	90.5369	0.0222	0.0022
 
-# contracts.status_1	86.9856	0.0213	0.0021
 # tender.coveredBy_1	84.7357	0.0207	0.0020
 # contracts.guarantees.obligations_1	83.9057	0.0205	0.0020
 
@@ -484,11 +506,6 @@ def get_parties_roles(ocds_data, role: str) -> int:
 
 # 
 # contracts.guarantees.obligations_2	40.1719	0.0098	0.0010
-
-
-# contracts.status_2	38.8012	0.0095	0.0009
-
-# planning.items.classification.id.n1_9	37.5250	0.0092	0.0009
 
 # planning.items.classification.id.n1_1_9	37.2277	0.0091	0.0009
 # planning.items.classification.id.n2_1	37.1796	0.0091	0.0009
@@ -585,10 +602,10 @@ def get_parties_roles(ocds_data, role: str) -> int:
 
 # planning.items.classification.id.n1_1_48	13.0610	0.0032	0.0003
 # parties.details.legalEntityTypeDetail enquirer_4	12.9762	0.0032	0.0003
-# planning.items.classification.id.n1_5	12.6877	0.0031	0.0003
+
 # planning.items.classification.id.n1_1_20	12.5356	0.0031	0.0003
 # planning.items.classification.id.n2_6	12.4218	0.0030	0.0003
-# planning.items.classification.id.n1_12	12.3429	0.0030	0.0003
+
 # parties.details.legalEntityTypeDetail enquirer_1	12.3165	0.0030	0.0003
 # tender.items.classification.id.n1_1_43	12.1375	0.0030	0.0003
 # planning.items.classification.id.n1_1_12	12.0458	0.0029	0.0003
@@ -610,7 +627,7 @@ def get_parties_roles(ocds_data, role: str) -> int:
 # contracts.guarantees.obligations_7	10.5516	0.0026	0.0003
 # tender.items.classification.id.n1_1_27	10.5373	0.0026	0.0003
 # planning.items.classification.id.n1_1_8	10.4855	0.0026	0.0003
-# planning.items.classification.id.n1_13	10.3981	0.0025	0.0003
+
 # tender.items.classification.id.n1_1_2	10.2633	0.0025	0.0002
 # tender.items.classification.id.n1_1_29	10.2324	0.0025	0.0002
 # tender.items.classification.id.n1_1_35	10.1280	0.0025	0.0002
@@ -618,7 +635,7 @@ def get_parties_roles(ocds_data, role: str) -> int:
 # tender.items.classification.id.n1_3	9.9613	0.0024	0.0002
 # contracts.guarantees.obligations_5	9.9418	0.0024	0.0002
 
-# planning.items.classification.id.n1_2	9.6985	0.0024	0.0002
+
 # contracts.investmentProjects.id q2	9.6662	0.0024	0.0002
 # planning.items.classification.id.n1_1_30	9.4596	0.0023	0.0002
 
@@ -630,20 +647,20 @@ def get_parties_roles(ocds_data, role: str) -> int:
 # planning.items.classification.id.n2_23	8.6479	0.0021	0.0002
 # tender.coveredBy_4	8.6328	0.0021	0.0002
 # tender.items.classification.id.n1_7	8.5705	0.0021	0.0002
-# planning.items.classification.id.n1_7	8.5574	0.0021	0.0002
+
 # planning.items.classification.id.n2_42	8.5042	0.0021	0.0002
 # planning.items.classification.id.n2_3	8.4994	0.0021	0.0002
 # tender.items.classification.id.n1_1_34	8.3756	0.0020	0.0002
-# planning.items.classification.id.n1_15	8.3344	0.0020	0.0002
+
 # tender.items.classification.id.n1_1_3	8.1909	0.0020	0.0002
 # tender.items.classification.id.n1_1_5	8.1823	0.0020	0.0002
 # tender.items.classification.id.n1_1_38	7.8390	0.0019	0.0002
 # parties.details.EntityType procuringEntity_2	7.7643	0.0019	0.0002
 # planning.items.classification.id.n1_1_43	7.6207	0.0019	0.0002
 # tender.items.classification.id.n2_18	7.5834	0.0019	0.0002
-# planning.items.classification.id.n1_14	7.5557	0.0018	0.0002
+
 # parties.details.legalEntityTypeDetail supplier_5	7.3900	0.0018	0.0002
-# planning.items.classification.id.n1_10	7.1310	0.0017	0.0002
+
 # tender.coveredBy_6	7.0125	0.0017	0.0002
 # parties.details.legalEntityTypeDetail enquirer_6	6.9285	0.0017	0.0002
 # parties.details.legalEntityTypeDetail supplier_6	6.9148	0.0017	0.0002
@@ -708,7 +725,6 @@ def get_parties_roles(ocds_data, role: str) -> int:
 # planning.items.classification.id.n1_1_15	3.5633	0.0009	0.0001
 # planning.items.classification.id.n1_1_50	3.4914	0.0009	0.0001
 # tender.items.classification.id.n1_1_14	3.4627	0.0008	0.0001
-# planning.items.classification.id.n1_4	3.4033	0.0008	0.0001
 # tender.items.classification.id.n2_4	3.3653	0.0008	0.0001
 # planning.items.classification.id.n2_9	3.3006	0.0008	0.0001
 # tender.items.classification.id.n2_7	3.2254	0.0008	0.0001
@@ -749,10 +765,7 @@ def get_parties_roles(ocds_data, role: str) -> int:
 # planning.items.classification.id.n2_17	1.7222	0.0004	0.0
 # parties.details.legalEntityTypeDetail payee_5	1.7191	0.0004	0.0
 
-# contracts.status_3	1.6861	0.0004	0.0
 # parties.details.legalEntityTypeDetail payee_11	1.5046	0.0004	0.0
-
-# planning.items.classification.id.n1_11	1.3535	0.0003	0.0
 # tender.items.classification.id.n1_1_8	1.3344	0.0003	0.0
 # planning.items.classification.id.n1_1_6	1.2222	0.0003	0.0
 # planning.items.classification.id.n2_43	1.1334	0.0003	0.0
