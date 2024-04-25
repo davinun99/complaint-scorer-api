@@ -1,7 +1,7 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
 from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name, get_buyer_id, get_buyer_name, get_awards_supplier_id, get_contract_implementation_purchase_orders
-from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles, get_contract_status, get_planning_items_class_id_n1_arr
+from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles, get_contract_status, get_planning_items_class_id_n1_arr, get_parties_details_legalEntityTypeDetail, get_planning_items_class_id_n2_arr, get_tender_items_class_id_n1_arr
 
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
@@ -438,11 +438,27 @@ def get_pd_dataframe(ocds_data: dict):
 	data['contracts.status_2'] = get_contract_status(ocds_data, "terminated")
 	data['contracts.status_3'] = get_contract_status(ocds_data, "cancelled")
 	data['contracts.status_4'] = get_contract_status(ocds_data, "pending")
- 
+	
+	roles = ['candidate','enquirer','payer', 'payee', 'supplier', 'procuringEntity', 'buyer', 'tenderer', 'notifiedSupplier']
+	for role in roles:
+		arr = get_parties_details_legalEntityTypeDetail(ocds_data, role)
+		legal_ent = f'parties.details.legalEntityTypeDetail {role}_'
+		for i in range(len(arr)):
+			data[f'{legal_ent}{i + 1}'] = arr[i]
+
+
 	planning_items_class_id_n1_arr = get_planning_items_class_id_n1_arr(ocds_data)
 	for i in range(len(planning_items_class_id_n1_arr)):
 		data[f'planning.items.classification.id.n1_{i + 1}'] = planning_items_class_id_n1_arr[i]
 	
+	planning_items_class_id_n2_arr = get_planning_items_class_id_n2_arr(ocds_data)
+	for i in range(len(planning_items_class_id_n2_arr)):
+		data[f'planning.items.classification.id.n2_{i + 1}'] = planning_items_class_id_n2_arr[i]
+
+	tender_items_class_id_n1_arr = get_tender_items_class_id_n1_arr(ocds_data)
+	for i in range(len(tender_items_class_id_n1_arr)):
+		data[f'tender.items.classification.id.n1_{i + 1}'] = tender_items_class_id_n1_arr[i]
+
 	data_df = pd.DataFrame([data])
 	return data_df, data
 
