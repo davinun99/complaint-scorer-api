@@ -502,7 +502,6 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # parties.details.EntityType buyer_3	69.5061	0.0170	0.0017
 # parties.details.EntityType procuringEntity_4	58.3922	0.0143	0.0014
 # tender.items.classification.id.n2_1	57.3918	0.0140	0.0014
-# tender.items.classification.id.n1_13	56.9272	0.0139	0.0014
 # tender.coveredBy_2	55.4019	0.0136	0.0013
 # tender.items.classification.id.n2_22	51.7908	0.0127	0.0012
 # awards.status_1	51.4833	0.0126	0.0012
@@ -579,13 +578,13 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 
 # planning.items.classification.id.n1_1_19	19.3093	0.0047	0.0005
 # tender.items.classification.id.n1_1_45	19.1834	0.0047	0.0005
-# tender.items.classification.id.n1_4	19.1500	0.0047	0.0005
+
 # tender.items.classification.id.n1_1_6	19.1473	0.0047	0.0005
 # tender.items.classification.id.n1_1_19	19.0835	0.0047	0.0005
 
 # tender.items.classification.id.n2_21	19.0018	0.0047	0.0005
 
-# tender.items.classification.id.n1_9	17.6333	0.0043	0.0004
+
 # tender.items.classification.id.n1_1_26	17.5980	0.0043	0.0004
 # planning.items.classification.id.n1_1_16	17.4628	0.0043	0.0004
 # tender.items.classification.id.n1_1_9	17.2494	0.0042	0.0004
@@ -601,7 +600,7 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 
 # tender.items.classification.id.n2_20	14.4849	0.0035	0.0003
 # planning.items.classification.id.n1_1_24	14.4585	0.0035	0.0003
-# tender.items.classification.id.n1_10	14.2062	0.0035	0.0003
+# tender
 # contracts.investmentProjects.id q3	13.9626	0.0034	0.0003
 # planning.items.classification.id.n1_1_41	13.9047	0.0034	0.0003
 # tender.items.classification.id.n1_1_13	13.8821	0.0034	0.0003
@@ -622,11 +621,10 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # tender.awardCriteria_ratedCriteria	11.8094	0.0029	0.0003
 
 # tender.items.classification.id.n2_10	11.6251	0.0028	0.0003
-# tender.items.classification.id.n1_2	11.5564	0.0028	0.0003
+# tender.items.classification.id.n1_1_14	
 # Tiempo de Convocatoria CO	11.5323	0.0028	0.0003
 # planning.items.classification.id.n1_1_37	11.3662	0.0028	0.0003
 # awards.statusDetails_5	11.2291	0.0027	0.0003
-# tender.items.classification.id.n1_6	11.0101	0.0027	0.0003
 
 # tender.statusDetails_Adjudicada	10.7079	0.0026	0.0003
 # contracts.guarantees.obligations_4	10.7037	0.0026	0.0003
@@ -641,7 +639,7 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # tender.items.classification.id.n1_1_29	10.2324	0.0025	0.0002
 # tender.items.classification.id.n1_1_35	10.1280	0.0025	0.0002
 # 
-# tender.items.classification.id.n1_3	9.9613	0.0024	0.0002
+
 # contracts.guarantees.obligations_5	9.9418	0.0024	0.0002
 
 
@@ -651,10 +649,8 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # planning.items.classification.id.n1_1_44	9.2963	0.0023	0.0002
 # Preguntas Sin Respuesta	9.2762	0.0023	0.0002
 
-# tender.items.classification.id.n1_5	8.8385	0.0022	0.0002
 
 # tender.coveredBy_4	8.6328	0.0021	0.0002
-# tender.items.classification.id.n1_7	8.5705	0.0021	0.0002
 
 # tender.items.classification.id.n1_1_34	8.3756	0.0020	0.0002
 
@@ -671,7 +667,6 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 
 # tender.items.classification.id.n1_1_7	6.7752	0.0017	0.0002
 # tender.items.classification.id.n1_1_12	6.7644	0.0017	0.0002
-# tender.items.classification.id.n1_12	6.7314	0.0016	0.0002
 
 # tender.items.classification.id.n2_19	6.6951	0.0016	0.0002
 # planning.items.classification.id.n1_1_2	6.4101	0.0016	0.0002
@@ -680,7 +675,6 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # tender.items.classification.id.n1_1_22	6.1786	0.0015	0.0001
 # planning.items.classification.id.n1_1_33	6.1402	0.0015	0.0001
 # planning.items.classification.id.n1_1_18	6.0182	0.0015	0.0001
-# tender.items.classification.id.n1_11	5.9809	0.0015	0.0001
 # tender.items.classification.id.n2_13	5.9645	0.0015	0.0001
 # planning.items.classification.id.n1_8	5.8471	0.0014	0.0001
 # tender.items.classification.id.n1_1_40	5.8164	0.0014	0.0001
@@ -750,7 +744,6 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # planning.items.classification.id.n1_1_54	1.9573	0.0005	0.0
 # contracts.guarantees.obligations_17	1.8845	0.0005	0.0
 # tender.items.classification.id.n2_8	1.8476	0.0005	0.0
-# tender.items.classification.id.n1_8	1.8323	0.0004	0.0
 
 # planning.items.classification.id.n1_1_49	1.8151	0.0004	0.0
 # planning.items.classification.id.n1_1_53	1.7655	0.0004	0.0
