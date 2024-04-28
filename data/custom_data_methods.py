@@ -597,6 +597,25 @@ def get_awards_status_details_arr(ocds_data:dict) -> list:
 				arr[ind] += 1
 	return arr
 
+def get_tender_covered_by_arr(ocds_data: dict) -> list:
+	map_data = {
+		"fonacide": 0,
+		"produccion_nacional": 1,
+		"urgencia_impostergable": 2,
+		"adreferendum": 3,
+		"agricultura_familiar": 4,
+		"covid_19": 5,
+		"almuerzo_escolar": 6,
+		"seguridad_nacional": 7,
+	}
+	
+	arr: list[int] = [0] * len(list(map_data))
+	if 'tender' in ocds_data and 'coveredBy' in ocds_data['tender']:
+		for cover in ocds_data['tender']['coveredBy']:
+			ind = map_data[cover]
+			arr[ind] += 1
+
+	return arr
 
 
 def get_contracts_investment_projects_id(ocds_data: dict, index: int) -> int:
@@ -610,22 +629,17 @@ def get_contracts_investment_projects_id(ocds_data: dict, index: int) -> int:
 					return 1
 	return 0
 ContactInvestmentProjectsId
+
+
 # --- REMAINING---
 
-
-
-# tender.coveredBy_1	84.7357	0.0207	0.0020
 # contracts.guarantees.obligations_1	83.9057	0.0205	0.0020
-
-# tender.coveredBy_2	55.4019	0.0136	0.0013
 
 # awards.status_1	51.4833	0.0126	0.0012
 
 # contracts.investmentProjects.id q1	45.2154	0.0111	0.0011
 
 # contracts.guarantees.obligations_2	40.1719	0.0098	0.0010
-
-# tender.coveredBy_5	34.1135	0.0083	0.0008
 
 # contracts.guarantees.obligations_10	26.6178	0.0065	0.0006
 
@@ -655,11 +669,6 @@ ContactInvestmentProjectsId
 # contracts.guarantees.obligations_5	9.9418	0.0024	0.0002
 
 # contracts.investmentProjects.id q2	9.6662	0.0024	0.0002
-
-
-# tender.coveredBy_4	8.6328	0.0021	0.0002
-
-# tender.coveredBy_6	7.0125	0.0017	0.0002
 
 
 
@@ -697,8 +706,8 @@ ContactInvestmentProjectsId
 
 # awards.status_3	0	0	0
 # awards.statusDetails_8	0	0	0
-# tender.coveredBy_3	0	0	0
-# tender.coveredBy_7	0	0	0
+
+
 # tender.procurementIntention.procuringEntity.id q2	0	0	0
 # tender.procurementIntention.procuringEntity.id q4	0	0	0
 # tender.procurementIntention.procuringEntity.name q2	0	0	0

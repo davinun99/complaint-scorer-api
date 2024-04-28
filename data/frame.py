@@ -1,7 +1,7 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
 from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name, get_buyer_id, get_buyer_name, get_awards_supplier_id, get_contract_implementation_purchase_orders
-from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles, get_contract_status, get_planning_items_class_id_n1_arr, get_parties_details_legalEntityTypeDetail, get_planning_items_class_id_n2_arr, get_tender_items_class_id_n1_arr, get_parties_details_entity_type, get_tender_items_class_id_n2_arr, get_tender_items_class_id_n1_1_arr, get_contract_status_details_arr, get_planning_items_class_id_n1_1_arr, get_awards_status_details_arr
+from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles, get_contract_status, get_planning_items_class_id_n1_arr, get_parties_details_legalEntityTypeDetail, get_planning_items_class_id_n2_arr, get_tender_items_class_id_n1_arr, get_parties_details_entity_type, get_tender_items_class_id_n2_arr, get_tender_items_class_id_n1_1_arr, get_contract_status_details_arr, get_planning_items_class_id_n1_1_arr, get_awards_status_details_arr, get_tender_covered_by_arr
 
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
@@ -9,16 +9,16 @@ from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 def get_pd_dataframe(ocds_data: dict):
 	data = {
 		'tender.value.amount': ocds_data['tender']['value']['amount'],
-		'tender.tenderPeriod.durationInDays': ocds_data['tender']['tenderPeriod']['durationInDays'],
 		'tender.datePublished.month': get_month(ocds_data['tender']['datePublished']),
 		'tender.datePublished.year': get_year(ocds_data['tender']['datePublished']),
 		'tender.datePublished.yearmonth': get_year_month(ocds_data['tender']['datePublished']),
-		'tender.tenderPeriod.startDate.month': get_month(ocds_data['tender']['tenderPeriod']['startDate']),
-		'tender.tenderPeriod.startDate.year': get_year(ocds_data['tender']['tenderPeriod']['startDate']),
-		'tender.tenderPeriod.startDate.yearmonth': get_year_month(ocds_data['tender']['tenderPeriod']['startDate']),
-		'tender.tenderPeriod.endDate.month': get_month(ocds_data['tender']['tenderPeriod']['endDate']),
-		'tender.tenderPeriod.endDate.year': get_year(ocds_data['tender']['tenderPeriod']['endDate']),
-		'tender.tenderPeriod.endDate.yearmonth': get_year_month(ocds_data['tender']['tenderPeriod']['endDate']),
+		'tender.tenderPeriod.durationInDays': 0,
+		'tender.tenderPeriod.startDate.month': 0,
+		'tender.tenderPeriod.startDate.year': 0,
+		'tender.tenderPeriod.startDate.yearmonth': 0,
+		'tender.tenderPeriod.endDate.month': 0,
+		'tender.tenderPeriod.endDate.year': 0,
+		'tender.tenderPeriod.endDate.yearmonth': 0,
 		'tender.awardPeriod.startDate.month': get_month(ocds_data['tender']['awardPeriod']['startDate']),
 		'tender.awardPeriod.startDate.year': get_year(ocds_data['tender']['awardPeriod']['startDate']),
 		'tender.awardPeriod.startDate.yearmonth': get_year_month(ocds_data['tender']['awardPeriod']['startDate']),
@@ -147,6 +147,13 @@ def get_pd_dataframe(ocds_data: dict):
 	if 'tenderPeriod' in ocds_data['tender']:
 		data['Tiempo de convocatoria LPN'] = ocds_data['tender']['tenderPeriod']['durationInDays'] <= 19
 		data['Tiempo de Convocatoria CO'] = ocds_data['tender']['tenderPeriod']['durationInDays'] <= 9
+		data['tender.tenderPeriod.durationInDays'] = ocds_data['tender']['tenderPeriod']['durationInDays']
+		data['tender.tenderPeriod.startDate.month'] = get_month(ocds_data['tender']['tenderPeriod']['startDate'])
+		data['tender.tenderPeriod.startDate.year'] = get_year(ocds_data['tender']['tenderPeriod']['startDate'])
+		data['tender.tenderPeriod.startDate.yearmonth'] = get_year_month(ocds_data['tender']['tenderPeriod']['startDate'])
+		data['tender.tenderPeriod.endDate.month'] = get_month(ocds_data['tender']['tenderPeriod']['endDate'])
+		data['tender.tenderPeriod.endDate.year'] = get_year(ocds_data['tender']['tenderPeriod']['endDate'])
+		data['tender.tenderPeriod.endDate.yearmonth'] = get_year_month(ocds_data['tender']['tenderPeriod']['endDate'])
 
 	if 'numberOfTenderers' in ocds_data['tender']:
 		data['tender.numberOfTenderers'] = ocds_data['tender']['numberOfTenderers']
@@ -485,6 +492,10 @@ def get_pd_dataframe(ocds_data: dict):
 	for i in range(len(awards_status_details_arr)):
 		data[f'awards.statusDetails_{i + 1}'] = awards_status_details_arr[i]
 	
+	tender_covered_by_arr = get_tender_covered_by_arr(ocds_data)
+	for i in range(len(tender_covered_by_arr)):
+		data[f'tender.coveredBy_{i + 1}'] = tender_covered_by_arr[i]
+
 	data_df = pd.DataFrame([data])
 	return data_df, data
 
@@ -517,14 +528,6 @@ def get_pd_dataframe(ocds_data: dict):
 # secondStage.id q3
 # secondStage.id q4
 
-# tender.coveredBy_1
-# tender.coveredBy_2
-# tender.coveredBy_3
-# tender.coveredBy_4
-# tender.coveredBy_5
-# tender.coveredBy_6
-# tender.coveredBy_7
-# tender.coveredBy_8
 # tender.notifiedSuppliers.id q1
 # tender.notifiedSuppliers.id q2
 # tender.notifiedSuppliers.id q3
