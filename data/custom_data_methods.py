@@ -597,6 +597,21 @@ def get_awards_status_details_arr(ocds_data:dict) -> list:
 				arr[ind] += 1
 	return arr
 
+def get_awards_status_arr(ocds_data:dict) -> list:
+	map_data = {
+		"active": 0,
+		"cancelled": 1,
+		"pending": 2,
+		"unsuccessful": 3,
+	}
+	arr = [0] * len(list(map_data))
+	if 'awards' in ocds_data:
+		for award in ocds_data['awards']:
+			if 'status' in award:
+				ind = map_data[award['status']]
+				arr[ind] += 1
+	return arr
+
 def get_tender_covered_by_arr(ocds_data: dict) -> list:
 	map_data = {
 		"fonacide": 0,
@@ -635,7 +650,7 @@ ContactInvestmentProjectsId
 
 # contracts.guarantees.obligations_1	83.9057	0.0205	0.0020
 
-# awards.status_1	51.4833	0.0126	0.0012
+
 
 # contracts.investmentProjects.id q1	45.2154	0.0111	0.0011
 
@@ -645,23 +660,13 @@ ContactInvestmentProjectsId
 
 # contracts.guarantees.obligations_3	15.4459	0.0038	0.0004
 # contracts.investmentProjects.id q3	13.9626	0.0034	0.0003
-# 
-# 
 
-# 
+
+
 # contracts.guarantees.obligations_14	13.3917	0.0033	0.0003
-
-# 
-
-
-# 
-
-
-# 
 # tender.awardCriteria_ratedCriteria	11.8094	0.0029	0.0003
 
 
-# awards.statusDetails_5	11.2291	0.0027	0.0003
 # contracts.guarantees.obligations_4	10.7037	0.0026	0.0003
 # 
 # contracts.guarantees.obligations_7	10.5516	0.0026	0.0003
@@ -673,7 +678,6 @@ ContactInvestmentProjectsId
 
 
 # contracts.guarantees.obligations_6	5.3603	0.0013	0.0001
-# awards.status_2	4.0074	0.0010	0.0001
 
 # contracts.investmentProjects.id q4	3.6286	0.0009	0.0001
 
@@ -704,8 +708,6 @@ ContactInvestmentProjectsId
 # contracts.guarantees.obligations_16	0	0	0
 # contracts.guarantees.obligations_18	0	0	0
 
-# awards.status_3	0	0	0
-# awards.statusDetails_8	0	0	0
 
 
 # tender.procurementIntention.procuringEntity.id q2	0	0	0

@@ -1,7 +1,7 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
 from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name, get_buyer_id, get_buyer_name, get_awards_supplier_id, get_contract_implementation_purchase_orders
-from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles, get_contract_status, get_planning_items_class_id_n1_arr, get_parties_details_legalEntityTypeDetail, get_planning_items_class_id_n2_arr, get_tender_items_class_id_n1_arr, get_parties_details_entity_type, get_tender_items_class_id_n2_arr, get_tender_items_class_id_n1_1_arr, get_contract_status_details_arr, get_planning_items_class_id_n1_1_arr, get_awards_status_details_arr, get_tender_covered_by_arr
+from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles, get_contract_status, get_planning_items_class_id_n1_arr, get_parties_details_legalEntityTypeDetail, get_planning_items_class_id_n2_arr, get_tender_items_class_id_n1_arr, get_parties_details_entity_type, get_tender_items_class_id_n2_arr, get_tender_items_class_id_n1_1_arr, get_contract_status_details_arr, get_planning_items_class_id_n1_1_arr, get_awards_status_details_arr, get_tender_covered_by_arr, get_awards_status_arr
 
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
@@ -491,6 +491,10 @@ def get_pd_dataframe(ocds_data: dict):
 	awards_status_details_arr = get_awards_status_details_arr(ocds_data)
 	for i in range(len(awards_status_details_arr)):
 		data[f'awards.statusDetails_{i + 1}'] = awards_status_details_arr[i]
+
+	awards_status_arr = get_awards_status_arr(ocds_data)
+	for i in range(len(awards_status_arr)):
+		data[f'awards.status_{i + 1}'] = awards_status_details_arr[i]
 	
 	tender_covered_by_arr = get_tender_covered_by_arr(ocds_data)
 	for i in range(len(tender_covered_by_arr)):
