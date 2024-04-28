@@ -488,7 +488,7 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 	count_arr = [0] * len(values_map)
 	if 'parties' in ocds_data:
 		for party in ocds_data['parties']:
-			if 'details' in party and role in party['roles']:
+			if 'details' in party and 'roles' in party and role in party['roles']:
 				if 'legalEntityTypeDetail' in party['details']:
 					legal_entity_type = party['details']['legalEntityTypeDetail']
 					count_arr[values_map.index(legal_entity_type)] += 1
