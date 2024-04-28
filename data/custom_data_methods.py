@@ -493,24 +493,39 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 					legal_entity_type = party['details']['legalEntityTypeDetail']
 					count_arr[values_map.index(legal_entity_type)] += 1
 	return count_arr
+
+def get_parties_details_entity_type(ocds_data: dict, role: str) -> list:
+	values_map = ['Municipalidades', 'NO CLASIFICADO', 'Organismos de la Administración Central', 'Entidades Descentralizadas']
+	# roles = ['candidate','enquirer','payer', 'payee', 'supplier', 'procuringEntity', 'buyer', 'tenderer', 'notifiedSupplier']
+	count_array = [0] * len(values_map)
+	if 'parties' in ocds_data:
+		parties = ocds_data['parties']
+		for party in parties:
+			if 'roles' in party:
+				roles_llamados = party['roles']
+				# será una columna para cada rol
+				if role in roles_llamados:
+					if 'details' in party:
+						detail = party['details']
+						if 'entityType' in detail:
+							count_array[values_map.index(detail['entityType'])] += 1
+            
+			
+	return count_array
 # --- REMAINING---
 
 
 
 # tender.coveredBy_1	84.7357	0.0207	0.0020
 # contracts.guarantees.obligations_1	83.9057	0.0205	0.0020
-# parties.details.EntityType buyer_3	69.5061	0.0170	0.0017
-# parties.details.EntityType procuringEntity_4	58.3922	0.0143	0.0014
+
 # tender.items.classification.id.n2_1	57.3918	0.0140	0.0014
 # tender.coveredBy_2	55.4019	0.0136	0.0013
 # tender.items.classification.id.n2_22	51.7908	0.0127	0.0012
 # awards.status_1	51.4833	0.0126	0.0012
 # contracts.statusDetails_1	51.3826	0.0126	0.0012
-# parties.details.EntityType procuringEntity_3	50.7915	0.0124	0.0012
-# parties.details.EntityType buyer_1	49.4325	0.0121	0.0012
-# parties.details.EntityType buyer_4	48.5794	0.0119	0.0012
-# parties.details.EntityType procuringEntity_1	47.3632	0.0116	0.0011
-# parties.details.EntityType payer_3	47.1255	0.0115	0.0011
+
+
 # contracts.investmentProjects.id q1	45.2154	0.0111	0.0011
 # tender.items.classification.id.n1_1_25	41.1033	0.0101	0.0010
 
@@ -524,8 +539,6 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # tender.items.classification.id.n1_1_1	36.0149	0.0088	0.0009
 # tender.items.classification.id.n2_3	35.8347	0.0088	0.0009
 
-
-# parties.details.EntityType payer_4	34.7144	0.0085	0.0008
 
 # tender.coveredBy_5	34.1135	0.0083	0.0008
 
@@ -592,7 +605,7 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # tender.items.classification.id.n1_1_23	17.0656	0.0042	0.0004
 # tender.items.classification.id.n2_11	16.8605	0.0041	0.0004
 # planning.items.classification.id.n1_1_27	16.6700	0.0041	0.0004
-# parties.details.EntityType buyer_2	16.1982	0.0040	0.0004
+
 
 # contracts.guarantees.obligations_3	15.4459	0.0038	0.0004
 # tender.items.classification.id.n2_16	15.3482	0.0038	0.0004
@@ -657,7 +670,7 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # tender.items.classification.id.n1_1_3	8.1909	0.0020	0.0002
 # tender.items.classification.id.n1_1_5	8.1823	0.0020	0.0002
 # tender.items.classification.id.n1_1_38	7.8390	0.0019	0.0002
-# parties.details.EntityType procuringEntity_2	7.7643	0.0019	0.0002
+
 # planning.items.classification.id.n1_1_43	7.6207	0.0019	0.0002
 # tender.items.classification.id.n2_18	7.5834	0.0019	0.0002
 
@@ -671,7 +684,7 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # tender.items.classification.id.n2_19	6.6951	0.0016	0.0002
 # planning.items.classification.id.n1_1_2	6.4101	0.0016	0.0002
 # planning.items.classification.id.n1_1_42	6.3331	0.0015	0.0002
-# parties.details.EntityType payer_1	6.2328	0.0015	0.0002
+
 # tender.items.classification.id.n1_1_22	6.1786	0.0015	0.0001
 # planning.items.classification.id.n1_1_33	6.1402	0.0015	0.0001
 # planning.items.classification.id.n1_1_18	6.0182	0.0015	0.0001
@@ -724,7 +737,7 @@ def get_parties_details_legalEntityTypeDetail(ocds_data: dict, role: str) -> lis
 # tender.eligibilityCriteria q1	3.1358	0.0008	0.0001
 # tender.items.classification.id.n1_1_44	3.1147	0.0008	0.0001
 # planning.items.classification.id.n1_1_10	3.0388	0.0007	0.0001
-# parties.details.EntityType payer_2	3.0379	0.0007	0.0001
+
 # tender.items.classification.id.n1_1_32	2.9104	0.0007	0.0001
 
 # tender.awardCriteria_qualityOnly	2.7746	0.0007	0.0001
