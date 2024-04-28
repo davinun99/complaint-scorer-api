@@ -1,7 +1,19 @@
 import pandas as pd 
 from data.general_utils import get_month, get_year, get_year_month, count_length
-from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing, get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others, get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail, get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers, get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria, get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name, get_buyer_id, get_buyer_name, get_awards_supplier_id, get_contract_implementation_purchase_orders
-from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3, get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles, get_contract_status, get_planning_items_class_id_n1_arr, get_parties_details_legalEntityTypeDetail, get_planning_items_class_id_n2_arr, get_tender_items_class_id_n1_arr, get_parties_details_entity_type, get_tender_items_class_id_n2_arr, get_tender_items_class_id_n1_1_arr, get_contract_status_details_arr, get_planning_items_class_id_n1_1_arr, get_awards_status_details_arr, get_tender_covered_by_arr, get_awards_status_arr, get_contracts_guarantees_obligations_arr
+from data.custom_data_methods import count_ammenments, has_no_enquiry_answer, proveed_notificados_co, has_amount_missing, has_criteria_missing
+from data.custom_data_methods import get_contract_amount, get_award_amount, get_tender_doc_type_count, get_tender_doc_type_count_others
+from data.custom_data_methods import get_tender_enquiries_respondidos, get_tender_enquiries_porcentaje, get_parties_legal_entity_type_detail
+from data.custom_data_methods import get_awards_doc_type_details, get_tender_notified_suppliers_id, get_contract_doc_type_details, get_tender_tenderers
+from data.custom_data_methods import get_contracts_transactions_count, get_tender_submission_method_details, get_tender_elegibility_criteria
+from data.custom_data_methods import get_tender_main_procurement_methods_details, get_tender_procuring_entity_id, get_tender_procuring_entity_name
+from data.custom_data_methods import get_buyer_id, get_buyer_name, get_awards_supplier_id, get_contract_implementation_purchase_orders
+from data.custom_data_methods import get_tender_items_classification_id_n5, get_tender_items_classification_id_n4, get_tender_items_classification_id_n3
+from data.custom_data_methods import get_planing_items_classification_id_n3, get_planing_items_classification_id_n4, get_parties_roles, get_contract_status
+from data.custom_data_methods import get_planning_items_class_id_n1_arr, get_parties_details_legalEntityTypeDetail, get_planning_items_class_id_n2_arr
+from data.custom_data_methods import get_tender_items_class_id_n1_arr, get_parties_details_entity_type, get_tender_items_class_id_n2_arr
+from data.custom_data_methods import get_tender_items_class_id_n1_1_arr, get_contract_status_details_arr, get_planning_items_class_id_n1_1_arr
+from data.custom_data_methods import get_awards_status_details_arr, get_tender_covered_by_arr, get_awards_status_arr, get_contracts_guarantees_obligations_arr
+from data.custom_data_methods import get_contracts_investment_projects_id_q
 
 from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail
 
@@ -19,6 +31,8 @@ def get_pd_dataframe(ocds_data: dict):
 		'tender.tenderPeriod.endDate.month': 0,
 		'tender.tenderPeriod.endDate.year': 0,
 		'tender.tenderPeriod.endDate.yearmonth': 0,
+		'tender.lots': 0,
+		'tender.lots.count': 0,
 		'tender.awardPeriod.startDate.month': get_month(ocds_data['tender']['awardPeriod']['startDate']),
 		'tender.awardPeriod.startDate.year': get_year(ocds_data['tender']['awardPeriod']['startDate']),
 		'tender.awardPeriod.startDate.yearmonth': get_year_month(ocds_data['tender']['awardPeriod']['startDate']),
@@ -286,22 +300,8 @@ def get_pd_dataframe(ocds_data: dict):
 	data['parties.details.legalEntityTypeDetail notifiedSupplier_23'] = parties_notified_supplier[22]
 
 	awards_doc_type_details = get_awards_doc_type_details(ocds_data)	
-	data['awards.documents.DocumentTypeDetails_1'] = awards_doc_type_details[0]
-	data['awards.documents.DocumentTypeDetails_2'] = awards_doc_type_details[1]
-	data['awards.documents.DocumentTypeDetails_3'] = awards_doc_type_details[2]
-	data['awards.documents.DocumentTypeDetails_4'] = awards_doc_type_details[3]
-	data['awards.documents.DocumentTypeDetails_5'] = awards_doc_type_details[4]
-	data['awards.documents.DocumentTypeDetails_6'] = awards_doc_type_details[5]
-	data['awards.documents.DocumentTypeDetails_7'] = awards_doc_type_details[6]
-	data['awards.documents.DocumentTypeDetails_8'] = awards_doc_type_details[7]
-	data['awards.documents.DocumentTypeDetails_9'] = awards_doc_type_details[8]
-	data['awards.documents.DocumentTypeDetails_10'] = awards_doc_type_details[9]
-	data['awards.documents.DocumentTypeDetails_11'] = awards_doc_type_details[10]
-	data['awards.documents.DocumentTypeDetails_12'] = awards_doc_type_details[11]
-	data['awards.documents.DocumentTypeDetails_13'] = awards_doc_type_details[12]
-	data['awards.documents.DocumentTypeDetails_14'] = awards_doc_type_details[13]
-	data['awards.documents.DocumentTypeDetails_15'] = awards_doc_type_details[14]
-	data['awards.documents.DocumentTypeDetails_16'] = awards_doc_type_details[15]
+	for i in range(len(awards_doc_type_details)):
+		data[f'awards.documents.DocumentTypeDetails_{i + 1}'] = awards_doc_type_details[i]
 
 	tender_notified_suppliers = get_tender_notified_suppliers_id(ocds_data)
 	data['tender.notifiedSuppliers.id q1'] = tender_notified_suppliers[0]
@@ -441,6 +441,12 @@ def get_pd_dataframe(ocds_data: dict):
 	data['parties.roles enquirer q3'] = parties_roles_enquirer[2]
 	data['parties.roles enquirer q4'] = parties_roles_enquirer[3]
 	
+	contract_inv_projects = get_contracts_investment_projects_id_q(ocds_data)
+	data['contracts.investmentProjects.id q1'] = contract_inv_projects[0]
+	data['contracts.investmentProjects.id q2'] = contract_inv_projects[1]
+	data['contracts.investmentProjects.id q3'] = contract_inv_projects[2]
+	data['contracts.investmentProjects.id q4'] = contract_inv_projects[3]
+
 	data['contracts.status_1'] = get_contract_status(ocds_data, "active")
 	data['contracts.status_2'] = get_contract_status(ocds_data, "terminated")
 	data['contracts.status_3'] = get_contract_status(ocds_data, "cancelled")
@@ -507,97 +513,5 @@ def get_pd_dataframe(ocds_data: dict):
 	data_df = pd.DataFrame([data])
 	return data_df, data
 
-
-# missing data:
-# tender.ProcurementIntentionCategory q1
-# tender.ProcurementIntentionCategory q2
-# tender.ProcurementIntentionCategory q3
-# tender.ProcurementIntentionCategory q4
-# tender.procuringEntity.id q1
-# tender.procuringEntity.id q2
-# tender.procuringEntity.id q3
-# tender.procuringEntity.id q4
-# tender.procuringEntity.name q1
-# tender.procuringEntity.name q2
-# tender.procuringEntity.name q3
-# tender.procuringEntity.name q4
-# tender.procurementIntention.procuringEntity.id q1
-# tender.procurementIntention.procuringEntity.id q2
-# tender.procurementIntention.procuringEntity.id q3
-# tender.procurementIntention.procuringEntity.id q4
-# tender.procurementIntention.procuringEntity.name q1
-# tender.procurementIntention.procuringEntity.name q2
-# tender.procurementIntention.procuringEntity.name q3
-# tender.procurementIntention.procuringEntity.name q4
-
-
-# secondStage.id q1
-# secondStage.id q2
-# secondStage.id q3
-# secondStage.id q4
-
-# tender.notifiedSuppliers.id q1
-# tender.notifiedSuppliers.id q2
-# tender.notifiedSuppliers.id q3
-# tender.notifiedSuppliers.id q4
-# tender.tenderers.id q1
-# tender.tenderers.id q2
-# tender.tenderers.id q3
-# tender.tenderers.id q4
-
-
-
-# contracts.investmentProjects.id q1
-# contracts.investmentProjects.id q2
-# contracts.investmentProjects.id q3
-# contracts.investmentProjects.id q4
-# contracts.amendments.amendsAmount_pyg
-# contracts.amendments.amendsAmount_usd
-
-# contracts.documents.DocumentTypeDetails_1
-# contracts.documents.DocumentTypeDetails_2
-# contracts.documents.DocumentTypeDetails_3
-# contracts.documents.DocumentTypeDetails_4
-# contracts.documents.DocumentTypeDetails_5
-# contracts.documents.DocumentTypeDetails_6
-# contracts.documents.DocumentTypeDetails_7
-# contracts.documents.DocumentTypeDetails_8
-# contracts.documents.DocumentTypeDetails_9
-# contracts.documents.DocumentTypeDetails_10
-# contracts.documents.DocumentTypeDetails_11
-# contracts.documents.DocumentTypeDetails_12
-
-# awards.documents.DocumentTypeDetails_1
-# awards.documents.DocumentTypeDetails_2
-# awards.documents.DocumentTypeDetails_3
-# awards.documents.DocumentTypeDetails_4
-# awards.documents.DocumentTypeDetails_5
-# awards.documents.DocumentTypeDetails_6
-# awards.documents.DocumentTypeDetails_7
-# awards.documents.DocumentTypeDetails_8
-# awards.documents.DocumentTypeDetails_9
-# awards.documents.DocumentTypeDetails_10
-# awards.documents.DocumentTypeDetails_11
-# awards.documents.DocumentTypeDetails_12
-# awards.documents.DocumentTypeDetails_13
-# awards.documents.DocumentTypeDetails_14
-# awards.documents.DocumentTypeDetails_15
-# awards.documents.DocumentTypeDetails_16
-# awards.documents.DocumentTypeDetails_17
 # awards.documents.DocumentTypeDetails_18
-# awards.documents.DocumentTypeDetails_19
-# awards.documents.DocumentTypeDetails_20
 # awards.documents.DocumentTypeDetails_21
-# awards.status_1
-# awards.status_2
-# awards.status_3
-# awards.status_4
-
-# buyer.id q1
-# buyer.id q2
-# buyer.id q3
-# buyer.id q4
-# buyer.name q1
-# buyer.name q2
-# buyer.name q3
-# buyer.name q4

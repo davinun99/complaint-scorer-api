@@ -1,6 +1,10 @@
 from data.general_utils import count_length
-from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails, TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName, BuyerId, BuyerName, AwardSuppliers
-from data.custom_pickle_methods import N5TenderItemsClass, N4PlanningItemsClass, N3TenderItemsClass, N3PlanningItemsClass, N4PlanningItemsClass, ContactInvestmentProjectsId, PartiesRoles, N1PlanningItemsClass, N2PlanningItemsClass, N1TenderItemsClass, N2TenderItemsClass, N1_1TenderItemsClass, N1_1PlanningItemsClass
+from data.custom_pickle_methods import TenderDocumentsDocumentTypeDetail, TenderNotifiedSuppliers, TenderTenderers, TendersubmissionMethodDetails
+from data.custom_pickle_methods import TenderEligibilityCriteria, TenderMainProcurementCategoryDetails, TenderProcuringEntityId, TenderProcuringEntityName
+from data.custom_pickle_methods import BuyerId, BuyerName, AwardSuppliers
+from data.custom_pickle_methods import N5TenderItemsClass, N4PlanningItemsClass, N3TenderItemsClass, N3PlanningItemsClass, N4PlanningItemsClass
+from data.custom_pickle_methods import ContactInvestmentProjectsId, PartiesRoles, N1PlanningItemsClass, N2PlanningItemsClass, N1TenderItemsClass
+from data.custom_pickle_methods import N2TenderItemsClass, N1_1TenderItemsClass, N1_1PlanningItemsClass, ContactInvestmentProjectsId
 
 ########## CUSTOM UTILS METHODS
 def count_ammenments(ocds_data: dict):
@@ -373,6 +377,24 @@ def get_planing_items_classification_id_n3(ocds_data: dict) -> list:
 							count_arr[3] += 1
 	return count_arr
 
+def get_contracts_investment_projects_id_q(ocds_data: dict) -> list:
+	ContactInvestmentProjectsId
+	count_arr = [0, 0, 0, 0]
+	if 'contracts' in ocds_data:
+		for contract in ocds_data['contracts']:
+			if 'investmentProjects' in contract:
+				if 'id' in contract['investmentProjects']:
+					if contract['investmentProjects']['id'] in ContactInvestmentProjectsId[0]:
+						count_arr[0] += 1
+					elif contract['investmentProjects']['id'] in ContactInvestmentProjectsId[1]:
+						count_arr[1] += 1
+					elif contract['investmentProjects']['id'] in ContactInvestmentProjectsId[2]:
+						count_arr[2] += 1
+					else:
+						count_arr[3] += 1
+	return count_arr
+
+
 def get_planing_items_classification_id_n4(ocds_data: dict) -> list:
 	count_arr = [0, 0, 0, 0]
 	if 'planning' in ocds_data:
@@ -674,54 +696,3 @@ def get_contracts_investment_projects_id(ocds_data: dict, index: int) -> int:
 				elif index == 3:
 					return 1
 	return 0
-ContactInvestmentProjectsId
-
-
-# --- REMAINING---
-
-
-
-
-
-# contracts.investmentProjects.id q1	45.2154	0.0111	0.0011
-
-# contracts.investmentProjects.id q3	13.9626	0.0034	0.0003
-
-
-
-# tender.awardCriteria_ratedCriteria	11.8094	0.0029	0.0003
-
-
-# contracts.investmentProjects.id q2	9.6662	0.0024	0.0002
-
-
-# contracts.investmentProjects.id q4	3.6286	0.0009	0.0001
-
-# tender.eligibilityCriteria q1	3.1358	0.0008	0.0001
-
-# tender.awardCriteria_qualityOnly	2.7746	0.0007	0.0001
-# planning.budget.amount.currency_USD	2.7576	0.0007	0.0001
-
-
-
-# tender.eligibilityCriteria q4	0.6228	0.0002	0.0
-
-
-# tender.awardCriteria_antecedentes_firma_consultora	0.3301	0.0001	0.0
-
-# planning.budget.amount.currency_PYG	0.2638	0.0001	0.0
-# tender.value.currency_PYG	0.2437	0.0001	0.0
-
-# tender.statusDetails_Inconsistente	0.0011	0.0	0.0
-# tender.value.currency_USD	0.0002	0.0	0.0
-# tender.procurementIntention.procuringEntity.id q2	0	0	0
-# tender.procurementIntention.procuringEntity.id q4	0	0	0
-# tender.procurementIntention.procuringEntity.name q2	0	0	0
-# tender.procurementIntention.procuringEntity.name q4	0	0	0
-# tender.ProcurementIntentionCategory q2	0	0	0
-# tender.ProcurementIntentionCategory q4	0	0	0
-# Proveedores Notificados CO	0	0	0
-# tender.procurementMethodRationale_covid-19	0	0	0
-# tender.procurementIntention.rationale_covid-19	0	0	0
-# tender.procurementIntention.status_complete	0	0	0
-# tender.procurementIntention.statusDetails_Ejecutada	0	0	0
