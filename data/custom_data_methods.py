@@ -633,6 +633,37 @@ def get_tender_covered_by_arr(ocds_data: dict) -> list:
 	return arr
 
 
+def get_contracts_guarantees_obligations_arr(ocds_data: dict) -> list:
+	guarantee_type_map_data = {
+		"fulfillment": 0,
+		"Endoso - Fiel Cumplimiento": 1,
+		"Endoso - Anticipo": 2,
+		"Accidentes Personales": 3,
+		"Todo Riesgos en Zona de Obras": 4,
+		"Anticipo": 5,
+		"Responsabilidad Civil General": 6,
+		'Endoso - Accidentes Personales': 7,
+		"Daños a Terceros": 8,
+		"Responsabilidad Profesional": 9,
+		"Endoso - Todo Riesgos en Zona de Obras": 10,
+		"Endoso - Responsabilidad Civil General": 11,
+		"Fondo de Reparo": 12,
+		"Deshonestidad": 13,
+		"Endoso - Daños a Terceros": 14,
+		"Endoso - Responsabilidad Profesional": 15,
+		"Endoso - Deshonestidad": 16,
+		"Endoso - Fondo de Reparo": 17,
+	}
+	countArr = [0] * len(list(guarantee_type_map_data))
+	if 'contracts' in ocds_data:
+		for contract in ocds_data['contracts']:
+			if'guarantees' in contract:
+				for guarantee in contract['guarantees']:
+					ind = guarantee_type_map_data[guarantee['obligations']]
+					countArr[ind] += 1
+	return countArr
+
+
 def get_contracts_investment_projects_id(ocds_data: dict, index: int) -> int:
 	if 'contracts' in ocds_data:
 		for contract in ocds_data['contracts']:
@@ -648,36 +679,21 @@ ContactInvestmentProjectsId
 
 # --- REMAINING---
 
-# contracts.guarantees.obligations_1	83.9057	0.0205	0.0020
+
 
 
 
 # contracts.investmentProjects.id q1	45.2154	0.0111	0.0011
 
-# contracts.guarantees.obligations_2	40.1719	0.0098	0.0010
-
-# contracts.guarantees.obligations_10	26.6178	0.0065	0.0006
-
-# contracts.guarantees.obligations_3	15.4459	0.0038	0.0004
 # contracts.investmentProjects.id q3	13.9626	0.0034	0.0003
 
 
 
-# contracts.guarantees.obligations_14	13.3917	0.0033	0.0003
 # tender.awardCriteria_ratedCriteria	11.8094	0.0029	0.0003
 
 
-# contracts.guarantees.obligations_4	10.7037	0.0026	0.0003
-# 
-# contracts.guarantees.obligations_7	10.5516	0.0026	0.0003
-
-# contracts.guarantees.obligations_5	9.9418	0.0024	0.0002
-
 # contracts.investmentProjects.id q2	9.6662	0.0024	0.0002
 
-
-
-# contracts.guarantees.obligations_6	5.3603	0.0013	0.0001
 
 # contracts.investmentProjects.id q4	3.6286	0.0009	0.0001
 
@@ -686,30 +702,18 @@ ContactInvestmentProjectsId
 # tender.awardCriteria_qualityOnly	2.7746	0.0007	0.0001
 # planning.budget.amount.currency_USD	2.7576	0.0007	0.0001
 
-# contracts.guarantees.obligations_11	2.6210	0.0006	0.0001
 
-# contracts.guarantees.obligations_17	1.8845	0.0005	0.0
-
-# contracts.guarantees.obligations_8	1.1224	0.0003	0.0
 
 # tender.eligibilityCriteria q4	0.6228	0.0002	0.0
 
-# contracts.guarantees.obligations_12	0.3797	0.0001	0.0
+
 # tender.awardCriteria_antecedentes_firma_consultora	0.3301	0.0001	0.0
 
 # planning.budget.amount.currency_PYG	0.2638	0.0001	0.0
-# contracts.guarantees.obligations_9	0.2527	0.0001	0.0
 # tender.value.currency_PYG	0.2437	0.0001	0.0
 
 # tender.statusDetails_Inconsistente	0.0011	0.0	0.0
 # tender.value.currency_USD	0.0002	0.0	0.0
-# contracts.guarantees.obligations_13	0	0	0
-# contracts.guarantees.obligations_15	0	0	0
-# contracts.guarantees.obligations_16	0	0	0
-# contracts.guarantees.obligations_18	0	0	0
-
-
-
 # tender.procurementIntention.procuringEntity.id q2	0	0	0
 # tender.procurementIntention.procuringEntity.id q4	0	0	0
 # tender.procurementIntention.procuringEntity.name q2	0	0	0
